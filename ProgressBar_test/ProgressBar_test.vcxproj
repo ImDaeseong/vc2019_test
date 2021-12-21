@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{724FADB7-D1C0-494E-85EE-5F1218F2EF99}</ProjectGuid>
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{1179982E-A6F7-4EC6-AC75-EC9A591E49FD}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>DragStatictest</RootNamespace>
+    <RootNamespace>ProgressBartest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -74,10 +74,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,12 +86,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -108,12 +108,12 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -184,46 +184,65 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CGdiPlusBitmap.h" />
-    <ClInclude Include="DragStatic.h" />
-    <ClInclude Include="DragStatic_test.h" />
-    <ClInclude Include="DragStatic_testDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="LeftLayerDlg.h" />
+    <ClInclude Include="MsgStatic.h" />
+    <ClInclude Include="NumberStatic.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PictureStatic.h" />
+    <ClInclude Include="ProgressbarPngStatic.h" />
+    <ClInclude Include="ProgressbarStatic.h" />
+    <ClInclude Include="ProgressBar_test.h" />
+    <ClInclude Include="ProgressBar_testDlg.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SkinButton.h" />
+    <ClInclude Include="RightDlg.h" />
+    <ClInclude Include="RightLayerDlg.h" />
+    <ClInclude Include="SkinButtonLayer.h" />
+    <ClInclude Include="SkinButtonNormal.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DragStatic.cpp" />
-    <ClCompile Include="DragStatic_test.cpp" />
-    <ClCompile Include="DragStatic_testDlg.cpp" />
+    <ClCompile Include="LeftLayerDlg.cpp" />
+    <ClCompile Include="MsgStatic.cpp" />
+    <ClCompile Include="NumberStatic.cpp" />
     <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="PictureStatic.cpp" />
-    <ClCompile Include="SkinButton.cpp" />
+    <ClCompile Include="ProgressbarPngStatic.cpp" />
+    <ClCompile Include="ProgressbarStatic.cpp" />
+    <ClCompile Include="ProgressBar_test.cpp" />
+    <ClCompile Include="ProgressBar_testDlg.cpp" />
+    <ClCompile Include="RightDlg.cpp" />
+    <ClCompile Include="RightLayerDlg.cpp" />
+    <ClCompile Include="SkinButtonLayer.cpp" />
+    <ClCompile Include="SkinButtonNormal.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DragStatictest.rc" />
+    <ResourceCompile Include="ProgressBartest.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\DragStatictest.rc2" />
+    <None Include="res\ProgressBartest.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bg.png" />
+    <Image Include="res\bg1.png" />
     <Image Include="res\btn_close.png" />
     <Image Include="res\click.png" />
-    <Image Include="res\DragStatic_test.ico" />
-    <Image Include="res\Image_e1.png" />
-    <Image Include="res\Image_e2.png" />
+    <Image Include="res\num_0.png" />
     <Image Include="res\num_1.png" />
     <Image Include="res\num_2.png" />
     <Image Include="res\num_3.png" />
     <Image Include="res\num_4.png" />
-    <Image Include="res\spritebox.png" />
+    <Image Include="res\num_5.png" />
+    <Image Include="res\num_6.png" />
+    <Image Include="res\num_7.png" />
+    <Image Include="res\num_8.png" />
+    <Image Include="res\num_9.png" />
+    <Image Include="res\ProgressBar_test.ico" />
+    <Image Include="res\progress_bar1.png" />
+    <Image Include="res\progress_bar2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
