@@ -67,7 +67,7 @@ void ProgressbarPngStatic::SetNoImage()
 	Gdiplus::Bitmap* bmp2 = new Gdiplus::Bitmap(rc.Width(), rc.Height(), PixelFormat32bppARGB);
 
 	Graphics graph1(bmp1);
-	Gdiplus::SolidBrush brush1(Gdiplus::Color(255, 0, 0, 255));
+	Gdiplus::SolidBrush brush1(Gdiplus::Color(255, 255, 0, 0));
 	graph1.FillRectangle(&brush1, 0, 0, bmp1->GetWidth(), bmp1->GetHeight());
 
 	Graphics graph2(bmp2);
@@ -239,7 +239,7 @@ void ProgressbarPngStatic::DrawPercent(Graphics& Gps, CRect rc, CString strPerce
 void ProgressbarPngStatic::DrawBorder(Graphics& Gps, CRect rc)
 {
 	RectF destRect(REAL(rc.left), REAL(rc.top), REAL(rc.Width()), REAL(rc.Height()));
-
+		
 	//사각형 라인
 	Pen pen(Color(255, 0, 0, 0), 1);
 	pen.SetDashStyle(Gdiplus::DashStyle::DashStyleDash);

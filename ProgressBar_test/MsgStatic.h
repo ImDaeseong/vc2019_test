@@ -18,4 +18,6 @@ public:
 	void SetMesssageFontSize(int nFontSize);
 	CString m_strMessage;	
 	int m_nFontSize;
+
+	void OnDrawLayerdWindow(Graphics& Gps);
 };

@@ -56,5 +56,5 @@ public:
 	void DestroyRightDlg();
 
 	void SetChildPos();
-	void MainCallFunc();
+	void MainCallFunc();	
 };

@@ -103,6 +103,7 @@ void LeftLayerDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_CLOSE, m_Btnclose);
 	DDX_Control(pDX, IDC_STATIC_NUM1, m_StcNum0);
 	DDX_Control(pDX, IDC_STATIC_NUM2, m_StcNum1);
+	DDX_Control(pDX, IDC_STATIC_MSG, m_StcMsg);
 }
 
 BEGIN_MESSAGE_MAP(LeftLayerDlg, CDialogEx)
@@ -233,6 +234,8 @@ void LeftLayerDlg::DrawSkin(CDC* pDC)
 	if (m_StcNum1.IsAvailableDraw())
 		m_StcNum1.OnDrawLayerdWindow(gps);
 
+	m_StcMsg.OnDrawLayerdWindow(gps);
+
 	CPoint ptWindowScreenPosition(rect.TopLeft());
 	CSize szWindow(cx, cy);
 
@@ -267,6 +270,12 @@ void LeftLayerDlg::InitControls()
 
 	m_StcNum1.SetImage(MAKEINTRESOURCE(NumberPic[m_nCount].uSecond), _T("PNG"), AfxGetApp()->m_hInstance);
 	m_StcNum1.MoveWindow(140, 60, m_StcNum1.GetImageWidth(), m_StcNum1.GetImageHeight());
+
+	CRect rc;
+	GetClientRect(&rc);
+	m_StcMsg.MoveWindow(10, rc.Height() - 40, rc.Width() - 20, 20);
+	m_StcMsg.SetMesssageFontSize(14);
+	m_StcMsg.SetMesssageText(_T("LeftLayerDlg"));
 }
 
 void LeftLayerDlg::OnBnClickedButtonClose()

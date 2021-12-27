@@ -30,6 +30,7 @@ void RightLayerDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_PROGRESS_PNG, m_StcProgressPng);
 	DDX_Control(pDX, IDC_STATIC_PROGRESS_PNGA, m_StcProgressPngA);
 	DDX_Control(pDX, IDC_STATIC_PROGRESS, m_StcProgress);
+	DDX_Control(pDX, IDC_STATIC_MSG, m_StcMsg);
 }
 
 BEGIN_MESSAGE_MAP(RightLayerDlg, CDialogEx)
@@ -131,6 +132,8 @@ void RightLayerDlg::DrawSkin()
 
 	m_StcProgress.OnDrawLayerdWindow(gps);
 
+	m_StcMsg.OnDrawLayerdWindow(gps);
+
 	RECT rcWindow;
 	::GetWindowRect(GetSafeHwnd(), &rcWindow);
 
@@ -173,6 +176,10 @@ void RightLayerDlg::InitControls()
 	m_StcProgress.MoveWindow(10, 110, rc.Width() - 20, 20);
 	m_StcProgress.SetRange(0, 100);
 	m_StcProgress.SetPos(0);
+
+	m_StcMsg.MoveWindow(10, 20, rc.Width() - 20, 20);
+	m_StcMsg.SetMesssageFontSize(14);
+	m_StcMsg.SetMesssageText(_T("RightLayerDlg"));
 }
 
 void RightLayerDlg::OnBnClickedButtonClose()

@@ -121,9 +121,9 @@ void ProgressbarStatic::DrawLeft(Graphics& Gps, CRect rc)
 {
 	RectF destRect(REAL(rc.left), REAL(rc.top), REAL(rc.Width()), REAL(rc.Height()));
 
-	Gdiplus::SolidBrush brush(Gdiplus::Color(255, 0, 0, 255));
+	Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 0, 0));
 	Gps.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
-	Gps.FillRectangle(&brush, destRect);	
+	Gps.FillRectangle(&brush, destRect);
 }
 
 void ProgressbarStatic::DrawRight(Graphics& Gps, CRect rc)

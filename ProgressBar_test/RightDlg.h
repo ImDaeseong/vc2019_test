@@ -44,4 +44,5 @@ public:
 	ProgressbarPngStatic m_StcProgressPng;
 	ProgressbarPngStatic m_StcProgressPngA;
 	ProgressbarStatic m_StcProgress;
+	CMsgStatic m_StcMsg;
 };

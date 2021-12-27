@@ -45,4 +45,5 @@ public:
 	CSkinButtonLayer m_Btnclose;	
 	NumberStatic m_StcNum0;
 	NumberStatic m_StcNum1;
+	CMsgStatic m_StcMsg;
 };
