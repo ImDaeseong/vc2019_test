@@ -84,7 +84,7 @@ int CProgressBartestApp::ExitInstance()
 	CoUninitialize();
 
 	return CWinApp::ExitInstance();
-	}
+}
 
 void CProgressBartestApp::SetClassName()
 {
