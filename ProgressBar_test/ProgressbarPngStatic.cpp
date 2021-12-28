@@ -74,6 +74,7 @@ void ProgressbarPngStatic::SetNoImage()
 	Gdiplus::SolidBrush brush2(Gdiplus::Color(255, 255, 255, 255));
 	graph2.FillRectangle(&brush2, 0, 0, bmp2->GetWidth(), bmp2->GetHeight());
 
+
 	if (m_pImgLeft == NULL)
 		m_pImgLeft = new CGdiPlusBitmapResource;
 
@@ -131,12 +132,16 @@ void ProgressbarPngStatic::OnPaint()
 	CPaintDC dc(this);
 
 	Graphics graphics(dc.GetSafeHdc());
-		
+	
+	CRect rc;
+	GetClientRect(&rc);
+
+	Color bgColor(Gdiplus::Color(255, 255, 255, 255));
+	graphics.Clear(bgColor);
+
 	graphics.SetSmoothingMode(SmoothingModeHighQuality);
 	graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 
-	CRect rc;
-	GetClientRect(&rc);
 
 	double Fraction = (double)(m_nPos - m_nMin) / ((double)(m_nMax - m_nMin));
 
@@ -170,12 +175,16 @@ void ProgressbarPngStatic::OnDrawLayerdWindow(Graphics& Gps)
 
 	USES_CONVERSION;
 
-	Gps.SetSmoothingMode(SmoothingModeHighQuality);
-	Gps.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-
 	CRect rc;
 	GetWindowRect(rc);
 	GetOwner()->ScreenToClient(rc);
+
+	//Color bgColor(Gdiplus::Color(255, 255, 255, 255));
+	//Gps.Clear(bgColor);
+
+	Gps.SetSmoothingMode(SmoothingModeHighQuality);
+	Gps.SetInterpolationMode(InterpolationModeHighQualityBicubic);
+
 
 	double Fraction = (double)(m_nPos - m_nMin) / ((double)(m_nMax - m_nMin));
 
