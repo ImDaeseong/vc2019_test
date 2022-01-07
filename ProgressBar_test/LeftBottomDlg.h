@@ -32,11 +32,13 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 private:
-	CGdiPlusBitmapResource* m_pbgImage;
-
-	void LoadImage();
-	void DrawSkin(CDC* pDC);
 	void InitControls();
 
 	int      m_nCount;
+
+public:
+	ProgressbarPngStatic m_StcProgressPng;
+	ProgressbarPngStatic m_StcProgressPngA;
+	ProgressbarStatic m_StcProgress;
+	CMsgStatic m_StcMsg;
 };

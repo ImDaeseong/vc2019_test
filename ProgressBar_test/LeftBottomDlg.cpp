@@ -8,24 +8,23 @@ IMPLEMENT_DYNAMIC(LeftBottomDlg, CDialogEx)
 LeftBottomDlg::LeftBottomDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_LEFT_BT_DIALOG, pParent)
 {
-	m_pbgImage = NULL;
-
-	m_nWidth = 0;
-	m_nHeight = 0;
+	m_nWidth = 268;
+	m_nHeight = 150;
 
 	m_nCount = 0;
 }
 
 LeftBottomDlg::~LeftBottomDlg()
 {
-	if (m_pbgImage)
-		delete m_pbgImage;
-	m_pbgImage = NULL;
 }
 
 void LeftBottomDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_STATIC_PROGRESS_PNG, m_StcProgressPng);
+	DDX_Control(pDX, IDC_STATIC_PROGRESS_PNGA, m_StcProgressPngA);
+	DDX_Control(pDX, IDC_STATIC_PROGRESS, m_StcProgress);
+	DDX_Control(pDX, IDC_STATIC_MSG, m_StcMsg);
 }
 
 BEGIN_MESSAGE_MAP(LeftBottomDlg, CDialogEx)
@@ -47,23 +46,16 @@ void LeftBottomDlg::OnDestroy()
 	CDialogEx::OnDestroy();
 
 	KillTimer(1);
-
-	if (m_pbgImage)
-		delete m_pbgImage;
-	m_pbgImage = NULL;
 }
 
 void LeftBottomDlg::OnPaint()
 {
 	CPaintDC dc(this);
-	DrawSkin(&dc);
 }
 
 BOOL LeftBottomDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	LoadImage();
 
 	InitControls();
 
@@ -77,39 +69,28 @@ void LeftBottomDlg::SetParent(CProgressBartestDlg* pParent)
 	m_pParent = pParent;
 }
 
-void LeftBottomDlg::LoadImage()
-{
-	ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);
-
-	if (!m_pbgImage)
-	{
-		m_pbgImage = new CGdiPlusBitmapResource;
-
-		if (!m_pbgImage->Load(MAKEINTRESOURCE(IDB_PNG1_DLG), _T("PNG"), AfxGetApp()->m_hInstance))
-			return;
-	}
-
-	int x = m_pbgImage->m_pBitmap->GetWidth();
-	int y = m_pbgImage->m_pBitmap->GetHeight();
-	MoveWindow(0, 0, x, y);
-
-	m_nWidth = x;
-	m_nHeight = y;
-}
-
-void LeftBottomDlg::DrawSkin(CDC* pDC)
-{
-	int x = m_pbgImage->m_pBitmap->GetWidth();
-	int y = m_pbgImage->m_pBitmap->GetHeight();
-
-	Graphics gps(pDC->GetSafeHdc());
-	gps.DrawImage(m_pbgImage->m_pBitmap, Rect(0, 0, x, y), 0, 0, x, y, UnitPixel);
-}
-
 void LeftBottomDlg::InitControls()
 {
-	CRect rc;
-	GetClientRect(&rc);
+	ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);
+	MoveWindow(0, 0, m_nWidth, m_nHeight);
+
+	m_StcProgressPng.SetNoImage();
+	m_StcProgressPng.MoveWindow(10, 50, m_nWidth - 20, 20);
+	m_StcProgressPng.SetRange(0, 100);
+	m_StcProgressPng.SetPos(0);
+
+	m_StcProgressPngA.SetImage(MAKEINTRESOURCE(IDB_PNG_BAR1), MAKEINTRESOURCE(IDB_PNG_BAR2), _T("PNG"), AfxGetApp()->m_hInstance);
+	m_StcProgressPngA.MoveWindow(10, 80, m_nWidth - 20, 20);
+	m_StcProgressPngA.SetRange(0, 100);
+	m_StcProgressPngA.SetPos(0);
+
+	m_StcProgress.MoveWindow(10, 110, m_nWidth - 20, 20);
+	m_StcProgress.SetRange(0, 100);
+	m_StcProgress.SetPos(0);
+
+	m_StcMsg.MoveWindow(10, 20, m_nWidth - 20, 20);
+	m_StcMsg.SetMesssageFontSize(14);
+	m_StcMsg.SetMesssageText(_T("LeftBottomDlg"));
 }
 
 void LeftBottomDlg::OnTimer(UINT_PTR nIDEvent)
@@ -118,6 +99,11 @@ void LeftBottomDlg::OnTimer(UINT_PTR nIDEvent)
 	if (m_nCount > 100)
 		m_nCount = 0;
 
+	m_StcProgressPng.SetPos(m_nCount);
+
+	m_StcProgressPngA.SetPos(m_nCount);
+
+	m_StcProgress.SetPos(m_nCount);
 
 	CDialogEx::OnTimer(nIDEvent);
 }
