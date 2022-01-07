@@ -27,5 +27,9 @@ private:
 	void DrawPercent(Graphics& Gps, CRect rc, CString strPercent);
 	void DrawBorder(Graphics& Gps, CRect rc);
 	void DrawBorderNormal(Graphics& Gps, CRect rc);
+
+	BOOL       m_bGradient;
+	COLORREF   m_crGrBG1;
+	COLORREF   m_crGrBG2;
 };
 

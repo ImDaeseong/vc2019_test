@@ -47,12 +47,16 @@ void CMsgStatic::OnPaint()
 	*/
 
 	//배경 라인 처리
-	///*
+	/*
 	Pen pen(Color(255, 0, 0, 0), 1);
 	pen.SetDashStyle(Gdiplus::DashStyle::DashStyleDash);
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
 	graphics.DrawRectangle(&pen, destRect);
-	//*/
+	*/
+
+	//라운드 라인 처리
+	//DrawRoundRect::OnDrawRoundRect(graphics, destRect, Gdiplus::Color(0, 0, 0), 4);
+	DrawRoundRect::OnDrawRoundRectLine(graphics, destRect, Gdiplus::Color(0, 0, 0), 4);
 }
 
 void CMsgStatic::OnDrawLayerdWindow(Graphics& Gps)
@@ -81,12 +85,16 @@ void CMsgStatic::OnDrawLayerdWindow(Graphics& Gps)
 	*/
 
 	//배경 라인 처리
-	///*
+	/*
 	Pen pen(Color(255, 0, 0, 0), 1);
 	pen.SetDashStyle(Gdiplus::DashStyle::DashStyleDash);
 	Gps.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
 	Gps.DrawRectangle(&pen, destRect);
-	//*/
+	*/
+
+	//라운드 라인 처리
+	//DrawRoundRect::OnDrawRoundRect(Gps, destRect, Gdiplus::Color(0, 0, 0), 4);
+	DrawRoundRect::OnDrawRoundRectLine(Gps, destRect, Gdiplus::Color(0, 0, 0), 4);
 }
 
 void CMsgStatic::SetMesssageText(CString sMessage)

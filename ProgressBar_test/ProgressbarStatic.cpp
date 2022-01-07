@@ -6,6 +6,10 @@ ProgressbarStatic::ProgressbarStatic()
 	m_nMin = 0;
 	m_nMax = 100;
 	m_nPos = 0;
+
+	m_bGradient = FALSE;
+	m_crGrBG1 = RGB(255, 0, 0);
+	m_crGrBG2 = RGB(255, 255, 255);
 }
 
 ProgressbarStatic::~ProgressbarStatic()
@@ -78,7 +82,7 @@ void ProgressbarStatic::OnPaint()
 	DrawPercent(graphics, rc, strPercent);
 
 	//영역 라인
-	DrawBorderNormal(graphics, rc);
+	DrawBorderNormal(graphics, rc);	
 }
 
 void ProgressbarStatic::OnDrawLayerdWindow(Graphics& Gps)
@@ -121,9 +125,18 @@ void ProgressbarStatic::DrawLeft(Graphics& Gps, CRect rc)
 {
 	RectF destRect(REAL(rc.left), REAL(rc.top), REAL(rc.Width()), REAL(rc.Height()));
 
-	Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 0, 0));
-	Gps.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
-	Gps.FillRectangle(&brush, destRect);
+	if (m_bGradient)
+	{
+		LinearGradientBrush	brush(Rect(0, 0, rc.Width(), rc.Height()), Color(255, GetRValue(m_crGrBG1), GetGValue(m_crGrBG1), GetBValue(m_crGrBG1)), Color(255, GetRValue(m_crGrBG2), GetGValue(m_crGrBG2), GetBValue(m_crGrBG2)), LinearGradientModeVertical);
+		Gps.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
+		Gps.FillRectangle(&brush, destRect);
+	}
+	else
+	{
+		Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 0, 0));
+		Gps.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
+		Gps.FillRectangle(&brush, destRect);	
+	}
 }
 
 void ProgressbarStatic::DrawRight(Graphics& Gps, CRect rc)

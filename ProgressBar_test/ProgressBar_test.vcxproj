@@ -184,7 +184,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CGdiPlusBitmap.h" />
+    <ClInclude Include="DrawRoundRect.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="LeftBottomDlg.h" />
     <ClInclude Include="LeftLayerDlg.h" />
     <ClInclude Include="MsgStatic.h" />
     <ClInclude Include="NumberStatic.h" />
@@ -201,6 +203,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DrawRoundRect.cpp" />
+    <ClCompile Include="LeftBottomDlg.cpp" />
     <ClCompile Include="LeftLayerDlg.cpp" />
     <ClCompile Include="MsgStatic.cpp" />
     <ClCompile Include="NumberStatic.cpp" />

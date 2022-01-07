@@ -131,7 +131,7 @@ void RightDlg::InitControls()
 
 	m_StcMsg.MoveWindow(10, 20, rc.Width() - 20, 20);
 	m_StcMsg.SetMesssageFontSize(14);
-	m_StcMsg.SetMesssageText(_T("RightDlg"));
+	m_StcMsg.SetMesssageText(_T("RightDlg"));	
 }
 
 void RightDlg::OnTimer(UINT_PTR nIDEvent)

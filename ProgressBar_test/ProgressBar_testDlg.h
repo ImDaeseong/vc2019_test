@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-class RightLayerDlg;
 class LeftLayerDlg;
+class LeftBottomDlg;
+class RightLayerDlg;
 class RightDlg;
 
 class CProgressBartestDlg : public CDialogEx
@@ -43,14 +44,18 @@ public:
 	CSkinButtonNormal m_Btnclick;
 	CMsgStatic m_StcMsg;
 
-	RightLayerDlg* m_pRightLayerDlg;
-	void CreateRightLayerDlg();
-	void DestroyRightLayerDlg();
-
 	LeftLayerDlg* m_pLeftLayerDlg;
 	void CreateLeftLayerDlg();
 	void DestroyLeftLayerDlg();
 
+	LeftBottomDlg* m_pLeftBottomDlg;
+	void CreateLeftBottomDlg();
+	void DestroyLeftBottomDlg();
+
+	RightLayerDlg* m_pRightLayerDlg;
+	void CreateRightLayerDlg();
+	void DestroyRightLayerDlg();
+	
 	RightDlg* m_pRightDlg;
 	void CreateRightDlg();
 	void DestroyRightDlg();

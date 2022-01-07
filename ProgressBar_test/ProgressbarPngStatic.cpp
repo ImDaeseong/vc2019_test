@@ -9,6 +9,10 @@ ProgressbarPngStatic::ProgressbarPngStatic()
 	m_nMin = 0;
 	m_nMax = 100;
 	m_nPos = 0;
+
+	m_bGradient = FALSE;
+	m_crGrBG1 = RGB(255, 0, 0);
+	m_crGrBG2 = RGB(255, 255, 255);
 }
 
 ProgressbarPngStatic::~ProgressbarPngStatic()
@@ -67,9 +71,18 @@ void ProgressbarPngStatic::SetNoImage()
 	Gdiplus::Bitmap* bmp2 = new Gdiplus::Bitmap(rc.Width(), rc.Height(), PixelFormat32bppARGB);
 
 	Graphics graph1(bmp1);
-	Gdiplus::SolidBrush brush1(Gdiplus::Color(255, 255, 0, 0));
-	graph1.FillRectangle(&brush1, 0, 0, bmp1->GetWidth(), bmp1->GetHeight());
 
+	if (m_bGradient)
+	{
+		LinearGradientBrush	brush1(Rect(0, 0, rc.Width(), rc.Height()), Color(255, GetRValue(m_crGrBG1), GetGValue(m_crGrBG1), GetBValue(m_crGrBG1)), Color(255, GetRValue(m_crGrBG2), GetGValue(m_crGrBG2), GetBValue(m_crGrBG2)), LinearGradientModeVertical);
+		graph1.FillRectangle(&brush1, 0, 0, bmp1->GetWidth(), bmp1->GetHeight());
+	}
+	else
+	{
+		Gdiplus::SolidBrush brush1(Gdiplus::Color(255, 255, 0, 0));
+		graph1.FillRectangle(&brush1, 0, 0, bmp1->GetWidth(), bmp1->GetHeight());
+	}
+	
 	Graphics graph2(bmp2);
 	Gdiplus::SolidBrush brush2(Gdiplus::Color(255, 255, 255, 255));
 	graph2.FillRectangle(&brush2, 0, 0, bmp2->GetWidth(), bmp2->GetHeight());

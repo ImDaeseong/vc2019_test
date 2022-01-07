@@ -23,6 +23,7 @@
 #define IDD_RIGHT_BT_DIALOG             153
 #define IDB_PNG_BAR1                    155
 #define IDB_PNG_BAR2                    156
+#define IDD_LEFT_BT_DIALOG              157
 #define IDC_BUTTON_CLOSE                1000
 #define IDC_BUTTON_CLICK                1001
 #define IDC_STATIC_MESSAGE              1002
@@ -32,15 +33,15 @@
 #define IDC_STATIC_PROGRESS_PNG         1008
 #define IDC_STATIC_PROGRESS_PNGA        1009
 #define IDC_STATIC_MSG                  1010
-#define IDC_STATIC_TEXTPROGRESS         1011
+#define IDC_STATIC_PROGRESS_TXT         1012
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        157
+#define _APS_NEXT_RESOURCE_VALUE        159
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1012
+#define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

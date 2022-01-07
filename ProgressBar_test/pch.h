@@ -18,6 +18,7 @@ using namespace std;
 using namespace Gdiplus;
 
 #include "CGdiPlusBitmap.h"
+#include "DrawRoundRect.h"
 #include "SkinButtonNormal.h"
 #include "SkinButtonLayer.h"
 #include "MsgStatic.h"

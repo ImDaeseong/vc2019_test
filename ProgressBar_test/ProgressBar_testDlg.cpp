@@ -5,6 +5,7 @@
 #include "afxdialogex.h"
 
 #include "LeftLayerDlg.h"
+#include "LeftBottomDlg.h"
 #include "RightLayerDlg.h"
 #include "RightDlg.h"
 
@@ -18,6 +19,8 @@ CProgressBartestDlg::CProgressBartestDlg(CWnd* pParent /*=nullptr*/)
 	m_pbgImage = NULL;
 
 	m_pLeftLayerDlg = NULL;
+	m_pLeftBottomDlg = NULL;
+
 	m_pRightLayerDlg = NULL;
 	m_pRightDlg = NULL;
 }
@@ -164,6 +167,7 @@ void CProgressBartestDlg::OnBnClickedButtonClose()
 void CProgressBartestDlg::OnBnClickedButtonClick()
 {
 	CreateLeftLayerDlg();
+	CreateLeftBottomDlg();
 	CreateRightLayerDlg();
 	CreateRightDlg();
 }
@@ -189,6 +193,30 @@ void CProgressBartestDlg::DestroyLeftLayerDlg()
 		m_pLeftLayerDlg->DestroyWindow();
 		delete m_pLeftLayerDlg;
 		m_pLeftLayerDlg = NULL;
+	}
+}
+
+void CProgressBartestDlg::CreateLeftBottomDlg()
+{
+	if (!m_pLeftBottomDlg)
+	{
+		m_pLeftBottomDlg = new LeftBottomDlg();
+		m_pLeftBottomDlg->SetParent(this);
+		m_pLeftBottomDlg->Create(IDD_LEFT_BT_DIALOG, this);
+		SetChildPos();
+		m_pLeftBottomDlg->ShowWindow(SW_SHOW);
+	}
+	else
+		m_pLeftBottomDlg->SetActiveWindow();
+}
+
+void CProgressBartestDlg::DestroyLeftBottomDlg()
+{
+	if (m_pLeftBottomDlg)
+	{
+		m_pLeftBottomDlg->DestroyWindow();
+		delete m_pLeftBottomDlg;
+		m_pLeftBottomDlg = NULL;
 	}
 }
 
@@ -250,6 +278,16 @@ void CProgressBartestDlg::SetChildPos()
 		int nX = rc.left - m_pLeftLayerDlg->m_nWidth;
 		int nY = rc.top;
 		m_pLeftLayerDlg->MoveWindow(nX, nY, m_pLeftLayerDlg->m_nWidth, m_pLeftLayerDlg->m_nHeight);
+	}
+
+	if (m_pLeftBottomDlg)
+	{
+		CRect rc;
+		GetWindowRect(rc);
+
+		int nX = rc.left - m_pLeftBottomDlg->m_nWidth;
+		int nY = rc.top + m_pLeftBottomDlg->m_nHeight;
+		m_pLeftBottomDlg->MoveWindow(nX, nY, m_pLeftBottomDlg->m_nWidth, m_pLeftBottomDlg->m_nHeight);
 	}
 
 	if (m_pRightLayerDlg)
