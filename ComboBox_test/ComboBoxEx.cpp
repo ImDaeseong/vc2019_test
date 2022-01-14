@@ -18,6 +18,7 @@ ComboBoxEx::~ComboBoxEx()
 }
 
 BEGIN_MESSAGE_MAP(ComboBoxEx, CComboBox)
+	ON_WM_NCPAINT()
 	ON_WM_PAINT()
 	ON_CONTROL_REFLECT(CBN_SELCHANGE, &ComboBoxEx::OnCbnSelchange)
 END_MESSAGE_MAP()
@@ -27,10 +28,23 @@ void ComboBoxEx::IsArrowImage(BOOL bImg)
 	m_bImg = bImg;
 }
 
+void ComboBoxEx::OnNcPaint()
+{
+	//테두리 영역 그리기
+	/*
+	CRect rc;
+	GetWindowRect(&rc);
+
+	CWindowDC WindowDC(this);
+	COLORREF clrborder = RGB(122, 122, 122);
+	WindowDC.Draw3dRect(0, 0, rc.Width(), rc.Height(), clrborder, clrborder);	
+	*/
+}
+
 void ComboBoxEx::OnPaint()
 {
 	CPaintDC dc(this); 
-		
+	
 	Graphics graphics(dc.GetSafeHdc());
 
 	graphics.SetSmoothingMode(SmoothingModeHighQuality);
@@ -114,7 +128,6 @@ void ComboBoxEx::DrawArrowBorder(Graphics& Gps, CRect rc)
 	Gps.DrawLine(&pen, rc.left - 2, rc.top + 6, rc.left - 2, rc.bottom - 6);
 	*/
 
-	//클릭 버튼 이미지 혹은 텍스트
 	if (m_bImg)
 	{
 		//클릭 버튼 이미지
@@ -168,4 +181,40 @@ void ComboBoxEx::OnCbnSelchange()
 
 	//투명 원도우일 경우 강제로 OnDrawLayerdWindow 태우기 위해 호출(투명원도우 일때만 필요)
 	::SendMessage(GetParent()->m_hWnd, WM_PAINT, 0, 0);
+}
+
+void ComboBoxEx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{	
+	//콤보 속성에서 소유자 그리기 설정 해야 작동됨
+	/*
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+	if (!pDC)
+	{
+		CRect rc = lpDrawItemStruct->rcItem;
+		pDC->FillSolidRect(rc.left, rc.top, rc.Width(), rc.Height(), RGB(255, 255, 255));
+
+		if (lpDrawItemStruct->itemID != -1)
+		{
+			CString strText;
+			GetLBText(lpDrawItemStruct->itemID, strText);
+			pDC->SetBkMode(TRANSPARENT);
+			pDC->SetTextColor(RGB(122, 122,122));
+			pDC->DrawText(strText, &rc, DT_LEFT | DT_VCENTER);
+		}
+	}
+	*/
+}
+
+void ComboBoxEx::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+}
+
+BOOL ComboBoxEx::PreCreateWindow(CREATESTRUCT& cs)
+{	
+	cs.style &= ~0xF;
+	cs.style |= CBS_DROPDOWNLIST;
+	cs.style |= CBS_OWNERDRAWVARIABLE;
+	cs.style |= CBS_HASSTRINGS;
+
+	return CComboBox::PreCreateWindow(cs);
 }

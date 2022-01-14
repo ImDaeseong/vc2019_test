@@ -39,7 +39,6 @@ private:
 	void InitData();
 
 public:
-
 	ComboBoxEx m_cbo1;
 	ComboBoxEx m_cbo2;
 	CComboBox m_cbo3;
