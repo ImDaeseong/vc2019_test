@@ -56,7 +56,6 @@ void CRunMRUtestDlg::OnSelchangeList1()
 
 	CString strFilePath;
 	mlist.GetText(nIndex, strFilePath);
-	//OutputDebugString(strFilePath);
 
 	//선택된 리스트항목 폴더 오픈 
 	HINSTANCE hInstance = ::ShellExecute(NULL, _T("open"), GetFilePath(strFilePath), NULL, NULL, SW_SHOW);
@@ -66,6 +65,7 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 {
 	//리스트 초기화
 	mlist.ResetContent();
+
 
 	//입력값
 	CString strInput;
@@ -82,6 +82,30 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 		CString strValue = aryList.GetAt(i);
 		mlist.AddString(strValue);
 	}
+	aryList.RemoveAll();
+
+
+
+	//테스트
+	/* 
+	//찾을 항목
+	CStringArray strFileNamelist;
+	strFileNamelist.Add(_T("LOSTARK.exe"));
+	strFileNamelist.Add(_T("liteide.exe"));
+
+	CStringArray aryList;
+	objusage.FindExe(strFileNamelist, aryList);
+	strFileNamelist.RemoveAll();
+
+	//찾은 데이터 리스트 등록
+	int nSize = aryList.GetSize();
+	for (int i = 0; i < nSize; i++)
+	{
+		CString strValue = aryList.GetAt(i);
+		mlist.AddString(strValue);
+	}
+	aryList.RemoveAll();
+	*/
 
 
 	//테스트
@@ -97,6 +121,7 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 	{
 		mlist.AddString(strValue);
 	}
+	aryList.RemoveAll();
 	*/
 }
 

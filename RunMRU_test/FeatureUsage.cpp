@@ -11,6 +11,89 @@ FeatureUsage::~FeatureUsage()
 	aryList.RemoveAll();
 }
 
+void FeatureUsage::getRecentDocs()
+{
+	//전체 서브 항목별 전체 데이터 조회 - 서브 항목 제목별
+	LPCTSTR lpkey = _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs");
+
+	HKEY hKey;
+
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, lpkey, 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
+	{
+		DWORD dwSubCount = 0;
+		if (RegQueryInfoKey(hKey, NULL, 0, 0, &dwSubCount, NULL, NULL, NULL, NULL, NULL, NULL, NULL) == ERROR_SUCCESS)
+		{			
+			for (int i = 0; i < dwSubCount; i++)
+			{
+				TCHAR szSubKey[MAX_PATH];
+				DWORD dwSize;
+				dwSize = MAX_PATH;
+
+				if (RegEnumKeyEx(hKey, i, szSubKey, &dwSize, NULL, NULL, NULL, NULL) == ERROR_SUCCESS)
+				{
+					HKEY hSubKey;
+					CString strSubKey;
+					strSubKey.Format(_T("%s\\%s"), lpkey, szSubKey);
+
+					if (RegOpenKeyEx(HKEY_CURRENT_USER, strSubKey, 0, KEY_ALL_ACCESS, &hSubKey) == ERROR_SUCCESS)
+					{
+						DWORD dwCount = 0;
+						if (RegQueryInfoKey(hSubKey, NULL, 0, 0, NULL, NULL, NULL, &dwCount, NULL, NULL, NULL, NULL) == ERROR_SUCCESS)
+						{
+							for (DWORD i = 0; i < dwCount; i++)
+							{
+								TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
+								DWORD dwSize, dwSizeOfByte, dwType;
+								dwSize = MAX_PATH;
+								dwSizeOfByte = MAX_PATH;
+
+								if (::RegEnumValue(hSubKey, i, szKey, &dwSize, NULL, &dwType, (LPBYTE)szValue, &dwSizeOfByte) == ERROR_SUCCESS)
+								{
+									CString strPath;
+									strPath.Format(_T("[%s] %s \n"), szKey, szValue);
+									OutputDebugString(strPath);
+								}
+							}
+						}
+					}
+				}
+			}
+		}		
+	}
+	RegCloseKey(hKey);
+
+
+	//전체 서브까지 전체 데이터 조회 - 데이터만 조회
+	/*
+	LPCTSTR lpkey = _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs");
+
+	HKEY hKey;
+
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, lpkey, 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
+	{
+		DWORD dwCount = 0;
+		if (RegQueryInfoKey(hKey, NULL, 0, 0, NULL, NULL, NULL, &dwCount, NULL, NULL, NULL, NULL) == ERROR_SUCCESS)
+		{
+			for (DWORD i = 0; i < dwCount; i++)
+			{
+				TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
+				DWORD dwSize, dwSizeOfByte, dwType;
+				dwSize = MAX_PATH;
+				dwSizeOfByte = MAX_PATH;
+
+				if (::RegEnumValue(hKey, i, szKey, &dwSize, NULL, &dwType, (LPBYTE)szValue, &dwSizeOfByte) == ERROR_SUCCESS)
+				{
+					CString strPath;
+					strPath.Format(_T("RecentDocs[%s] %s \n"), szKey, szValue);
+					OutputDebugString(strPath);
+				}
+			}
+		}		
+	}
+	RegCloseKey(hKey);
+	*/	
+}
+
 void FeatureUsage::getRunMRU()
 {
 	LPCTSTR lpkey = _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU");
@@ -24,20 +107,66 @@ void FeatureUsage::getRunMRU()
 		{
 			for (DWORD i = 0; i < dwCount; i++)
 			{
-				TCHAR szBuffer[MAX_PATH], szValue[MAX_PATH];
+				TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
 				DWORD dwSize, dwSizeOfByte, dwType;
 				dwSize = MAX_PATH;
 				dwSizeOfByte = MAX_PATH;
 
-				if (::RegEnumValue(hKey, i, szBuffer, &dwSize, NULL, &dwType, (LPBYTE)szValue, &dwSizeOfByte) == ERROR_SUCCESS)
+				if (::RegEnumValue(hKey, i, szKey, &dwSize, NULL, &dwType, (LPBYTE)szValue, &dwSizeOfByte) == ERROR_SUCCESS)
 				{
 					CString strPath;
-					strPath.Format(_T("%s"), szValue);
+					strPath.Format(_T("RunMRU[%s] %s \n"), szKey, szValue);
 					OutputDebugString(strPath);					
 				}
 			}
 		}
 	}
+	RegCloseKey(hKey);
+}
+
+void FeatureUsage::getAppBadgeUpdated()
+{
+	LPCTSTR lpkey = _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FeatureUsage\\AppBadgeUpdated");
+
+	HKEY hKey;
+
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, lpkey, 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
+	{
+		DWORD dwCount = 0;
+		if (RegQueryInfoKey(hKey, NULL, 0, 0, NULL, NULL, NULL, &dwCount, NULL, NULL, NULL, NULL) == ERROR_SUCCESS)
+		{
+			for (DWORD i = 0; i < dwCount; i++)
+			{
+				TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
+				DWORD dwSize, dwSizeOfByte, dwType;
+				dwSize = MAX_PATH;
+				dwSizeOfByte = MAX_PATH;
+
+				unsigned long lValue, lValueSize;
+				lValueSize = sizeof(lValue);
+
+				if (RegEnumValue(hKey, i, szKey, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
+				{
+					if (dwType == REG_DWORD)
+					{
+						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
+						{
+							CString strPath;
+							strPath.Format(_T("%s"), szKey);
+
+							int nExist = _waccess(strPath, 0);
+							if (nExist != -1)
+							{
+								aryList.Add(strPath);
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
 	RegCloseKey(hKey);
 }
 
@@ -54,7 +183,7 @@ void FeatureUsage::getAppLaunch()
 		{
 			for (DWORD i = 0; i < dwCount; i++)
 			{
-				TCHAR szBuffer[MAX_PATH], szValue[MAX_PATH];
+				TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
 				DWORD dwSize, dwSizeOfByte, dwType;
 				dwSize = MAX_PATH;
 				dwSizeOfByte = MAX_PATH;
@@ -62,14 +191,14 @@ void FeatureUsage::getAppLaunch()
 				unsigned long lValue, lValueSize;
 				lValueSize = sizeof(lValue);
 
-				if (RegEnumValue(hKey, i, szBuffer, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
+				if (RegEnumValue(hKey, i, szKey, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
 				{
 					if (dwType == REG_DWORD)
 					{
-						if (RegQueryValueEx(hKey, szBuffer, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
+						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
 							CString strPath;
-							strPath.Format(_T("%s"), szBuffer);
+							strPath.Format(_T("%s"), szKey);
 
 							int nExist = _waccess(strPath, 0);
 							if (nExist != -1)
@@ -100,7 +229,7 @@ void FeatureUsage::getAppSwitched()
 		{
 			for (DWORD i = 0; i < dwCount; i++)
 			{
-				TCHAR szBuffer[MAX_PATH], szValue[MAX_PATH];
+				TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
 				DWORD dwSize, dwSizeOfByte, dwType;
 				dwSize = MAX_PATH;
 				dwSizeOfByte = MAX_PATH;
@@ -108,14 +237,14 @@ void FeatureUsage::getAppSwitched()
 				unsigned long lValue, lValueSize;
 				lValueSize = sizeof(lValue);
 
-				if (RegEnumValue(hKey, i, szBuffer, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
+				if (RegEnumValue(hKey, i, szKey, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
 				{
 					if (dwType == REG_DWORD)
 					{
-						if (RegQueryValueEx(hKey, szBuffer, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
+						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
 							CString strPath;
-							strPath.Format(_T("%s"), szBuffer);
+							strPath.Format(_T("%s"), szKey);
 
 							int nExist = _waccess(strPath, 0);
 							if (nExist != -1)
@@ -147,7 +276,7 @@ void FeatureUsage::getShowJumpView()
 		{
 			for (DWORD i = 0; i < dwCount; i++)
 			{
-				TCHAR szBuffer[MAX_PATH], szValue[MAX_PATH];
+				TCHAR szKey[MAX_PATH], szValue[MAX_PATH];
 				DWORD dwSize, dwSizeOfByte, dwType;
 				dwSize = MAX_PATH;
 				dwSizeOfByte = MAX_PATH;
@@ -155,14 +284,14 @@ void FeatureUsage::getShowJumpView()
 				unsigned long lValue, lValueSize;
 				lValueSize = sizeof(lValue);
 
-				if (RegEnumValue(hKey, i, szBuffer, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
+				if (RegEnumValue(hKey, i, szKey, &dwSize, NULL, &dwType, NULL, NULL) == ERROR_SUCCESS)
 				{
 					if (dwType == REG_DWORD)
 					{
-						if (RegQueryValueEx(hKey, szBuffer, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
+						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
 							CString strPath;
-							strPath.Format(_T("%s"), szBuffer);
+							strPath.Format(_T("%s"), szKey);
 
 							int nExist = _waccess(strPath, 0);
 							if (nExist != -1)
@@ -192,7 +321,9 @@ CString FeatureUsage::GetFileName(CString strFilename)
 
 void FeatureUsage::InitLoad()
 {
-	//getRunMRU();
+	getRecentDocs();
+	getRunMRU();
+	getAppBadgeUpdated();
 	getAppLaunch();
 	getAppSwitched();
 	getShowJumpView();
@@ -205,6 +336,7 @@ void FeatureUsage::clear()
 
 void FeatureUsage::FindExe(CString strFileName)
 {
+
 	int nSize = aryList.GetSize();
 	for (int i = 0; i < nSize; i++)
 	{
@@ -231,5 +363,28 @@ void FeatureUsage::FindExe(CString strFileName, CStringArray& list)
 		{
 			list.Add(aryList.GetAt(i));
 		}
+	}
+}
+
+void FeatureUsage::FindExe(CStringArray& strFileNamelist, CStringArray& list)
+{
+	int kSize = strFileNamelist.GetSize();
+	int nSize = aryList.GetSize();
+
+	for (int i = 0; i < nSize; i++)
+	{
+		//파일이름만 가져온다
+		CString strValue = GetFileName(aryList.GetAt(i));
+
+		//찾아야할 항목 리스트
+		for (int k = 0; k < kSize; k++)
+		{
+			CString strItem = GetFileName(strFileNamelist.GetAt(k));
+
+			if (_stricmp((CStringA)strValue, (CStringA)strItem) == 0)
+			{
+				list.Add(aryList.GetAt(i));
+			}
+		}		
 	}
 }
