@@ -56,6 +56,7 @@ void FeatureUsage::getRecentDocs()
 							}
 						}
 					}
+					RegCloseKey(hSubKey);
 				}
 			}
 		}		
@@ -151,14 +152,38 @@ void FeatureUsage::getAppBadgeUpdated()
 					{
 						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
+							int nExist = 0;
 							CString strPath;
 							strPath.Format(_T("%s"), szKey);
-
-							int nExist = _waccess(strPath, 0);
-							if (nExist != -1)
+														
+							CString strChange = FindPathString(strPath);
+							if (strChange != "")
 							{
-								aryList.Add(strPath);
+								CString strTemp1, strTemp2;
+								strTemp1.Format(_T("%s\\%s"), GetProgramFilesx86Path(), strChange);
+								strTemp2.Format(_T("%s\\%s"), GetProgramFilesPath(), strChange);
+
+								nExist = _waccess(strTemp1, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp1);
+								}
+
+								nExist = _waccess(strTemp2, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp2);
+								}
 							}
+							else
+							{
+								nExist = _waccess(strPath, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strPath);
+								}
+							}
+							
 						}
 					}
 				}
@@ -197,13 +222,36 @@ void FeatureUsage::getAppLaunch()
 					{
 						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
+							int nExist = 0;
 							CString strPath;
 							strPath.Format(_T("%s"), szKey);
 
-							int nExist = _waccess(strPath, 0);
-							if (nExist != -1)
+							CString strChange = FindPathString(strPath);
+							if (strChange != "")
 							{
-								aryList.Add(strPath);
+								CString strTemp1, strTemp2;
+								strTemp1.Format(_T("%s\\%s"), GetProgramFilesx86Path(), strChange);
+								strTemp2.Format(_T("%s\\%s"), GetProgramFilesPath(), strChange);
+
+								nExist = _waccess(strTemp1, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp1);
+								}
+
+								nExist = _waccess(strTemp2, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp2);
+								}
+							}
+							else
+							{
+								nExist = _waccess(strPath, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strPath);
+								}
 							}
 						}
 					}
@@ -243,13 +291,36 @@ void FeatureUsage::getAppSwitched()
 					{
 						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
+							int nExist = 0;
 							CString strPath;
 							strPath.Format(_T("%s"), szKey);
 
-							int nExist = _waccess(strPath, 0);
-							if (nExist != -1)
+							CString strChange = FindPathString(strPath);
+							if (strChange != "")
 							{
-								aryList.Add(strPath);
+								CString strTemp1, strTemp2;
+								strTemp1.Format(_T("%s\\%s"), GetProgramFilesx86Path(), strChange);
+								strTemp2.Format(_T("%s\\%s"), GetProgramFilesPath(), strChange);
+
+								nExist = _waccess(strTemp1, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp1);
+								}
+
+								nExist = _waccess(strTemp2, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp2);
+								}
+							}
+							else
+							{
+								nExist = _waccess(strPath, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strPath);
+								}
 							}
 						}
 					}
@@ -290,13 +361,36 @@ void FeatureUsage::getShowJumpView()
 					{
 						if (RegQueryValueEx(hKey, szKey, NULL, NULL, (LPBYTE)&lValue, &lValueSize) == ERROR_SUCCESS)
 						{
+							int nExist = 0;
 							CString strPath;
 							strPath.Format(_T("%s"), szKey);
 
-							int nExist = _waccess(strPath, 0);
-							if (nExist != -1)
+							CString strChange = FindPathString(strPath);
+							if (strChange != "")
 							{
-								aryList.Add(strPath);
+								CString strTemp1, strTemp2;
+								strTemp1.Format(_T("%s\\%s"), GetProgramFilesx86Path(), strChange);
+								strTemp2.Format(_T("%s\\%s"), GetProgramFilesPath(), strChange);
+
+								nExist = _waccess(strTemp1, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp1);
+								}
+
+								nExist = _waccess(strTemp2, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strTemp2);
+								}
+							}
+							else
+							{
+								nExist = _waccess(strPath, 0);
+								if (nExist != -1)
+								{
+									aryList.Add(strPath);
+								}
 							}
 						}
 					}
@@ -308,6 +402,51 @@ void FeatureUsage::getShowJumpView()
 	}
 
 	RegCloseKey(hKey);
+}
+
+CString FeatureUsage::GetSystem32Path()
+{
+	TCHAR szPath[MAX_PATH];
+	GetSystemDirectory(szPath, MAX_PATH);	
+	CString strFilesPath = szPath;
+	return strFilesPath;
+}
+
+CString FeatureUsage::GetProgramFilesPath()
+{
+	CString strFilesPath;
+	strFilesPath.Format(_T("%s:\\Program Files"), GetSystem32Path().Left(1));
+	return strFilesPath;
+}
+
+CString FeatureUsage::GetProgramFilesx86Path()
+{	
+	CString strFilesPath;
+	strFilesPath.Format(_T("%s:\\Program Files (x86)"), GetSystem32Path().Left(1));
+	return strFilesPath;
+}
+
+CString FeatureUsage::FindPathString(CString strPath)
+{
+	CString lpProgramFilesX86 = _T("{6D809377-6AF0-444B-8957-A3773F02200E}");
+	CString lpProgramFiles = _T("{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}");
+
+	CString strReturn = _T("");
+
+	int nIndex = strPath.Find(lpProgramFilesX86, 0);
+	if (nIndex != -1)
+	{
+		strReturn = strPath.Mid(nIndex + lpProgramFilesX86.GetLength());
+	}
+	else
+	{
+		nIndex = strPath.Find(lpProgramFiles, 0);
+		if (nIndex != -1)
+		{
+			strReturn = strPath.Mid(nIndex + lpProgramFiles.GetLength());
+		}
+	}
+	return strReturn;
 }
 
 CString FeatureUsage::GetFileName(CString strFilename)
@@ -336,7 +475,6 @@ void FeatureUsage::clear()
 
 void FeatureUsage::FindExe(CString strFileName)
 {
-
 	int nSize = aryList.GetSize();
 	for (int i = 0; i < nSize; i++)
 	{
@@ -348,7 +486,17 @@ void FeatureUsage::FindExe(CString strFileName)
 			//파일을 실행한다
 			HINSTANCE hInstance = ::ShellExecute(NULL, _T("open"), aryList.GetAt(i), NULL, NULL, SW_SHOW);
 		}		
-	}	
+	}
+}
+
+void FeatureUsage::FindExe(CStringArray& list)
+{
+	int nSize = aryList.GetSize();
+	for (int i = 0; i < nSize; i++)
+	{
+		//CString strValue = GetFileName(aryList.GetAt(i));
+		list.Add(aryList.GetAt(i));
+	}
 }
 
 void FeatureUsage::FindExe(CString strFileName, CStringArray& list)

@@ -66,7 +66,20 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 	//리스트 초기화
 	mlist.ResetContent();
 
+	CStringArray aryList;
+	objusage.FindExe(aryList);
 
+	//찾은 데이터 리스트 등록
+	int nSize = aryList.GetSize();
+	for (int i = 0; i < nSize; i++)
+	{
+		CString strValue = aryList.GetAt(i);
+		mlist.AddString(strValue);
+	}
+	aryList.RemoveAll();
+
+
+	/*
 	//입력값
 	CString strInput;
 	GetDlgItemText(IDC_EDIT1, strInput);
@@ -83,7 +96,7 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 		mlist.AddString(strValue);
 	}
 	aryList.RemoveAll();
-
+	*/
 
 
 	//테스트
@@ -92,6 +105,10 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 	CStringArray strFileNamelist;
 	strFileNamelist.Add(_T("LOSTARK.exe"));
 	strFileNamelist.Add(_T("liteide.exe"));
+	strFileNamelist.Add(_T("pycharm64.exe"));
+	strFileNamelist.Add(_T("GoClean.exe"));
+	strFileNamelist.Add(_T("studio64.exe"));
+
 
 	CStringArray aryList;
 	objusage.FindExe(strFileNamelist, aryList);
