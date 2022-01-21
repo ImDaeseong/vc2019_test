@@ -21,6 +21,7 @@ void CRunMRUtestDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRunMRUtestDlg, CDialogEx)
 	ON_WM_PAINT()
+	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON1, &CRunMRUtestDlg::OnBnClickedButton1)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CRunMRUtestDlg::OnSelchangeList1)
 END_MESSAGE_MAP()
@@ -29,14 +30,18 @@ BOOL CRunMRUtestDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	objusage.InitLoad();
-
 	return TRUE;  
 }
 
 void CRunMRUtestDlg::OnPaint()
 {
 	CPaintDC dc(this);
+}
+
+void CRunMRUtestDlg::OnDestroy()
+{
+
+	CDialog::OnDestroy();
 }
 
 CString GetFilePath(CString strFilename)
@@ -66,6 +71,10 @@ void CRunMRUtestDlg::OnBnClickedButton1()
 	//리스트 초기화
 	mlist.ResetContent();
 
+	//레지스트리 조회
+	objusage.InitLoad();
+
+	//레지스트리 데이터 읽기
 	CStringArray aryList;
 	objusage.FindExe(aryList);
 

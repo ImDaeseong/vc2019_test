@@ -3,12 +3,10 @@
 
 FeatureUsage::FeatureUsage()
 {
-	aryList.RemoveAll();
 }
 
 FeatureUsage::~FeatureUsage()
 {
-	aryList.RemoveAll();
 }
 
 void FeatureUsage::getRecentDocs()
@@ -459,18 +457,15 @@ CString FeatureUsage::GetFileName(CString strFilename)
 }
 
 void FeatureUsage::InitLoad()
-{
+{	
+	aryList.RemoveAll();
+
 	getRecentDocs();
 	getRunMRU();
 	getAppBadgeUpdated();
 	getAppLaunch();
 	getAppSwitched();
 	getShowJumpView();
-}
-
-void FeatureUsage::clear()
-{
-	aryList.RemoveAll();
 }
 
 void FeatureUsage::FindExe(CString strFileName)

@@ -15,6 +15,7 @@ public:
 protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
+	afx_msg void OnDestroy();
 	afx_msg void OnSelchangeList1();
 	afx_msg void OnBnClickedButton1();
 	DECLARE_MESSAGE_MAP()

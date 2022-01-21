@@ -7,7 +7,6 @@ public:
 
 public:
 	void InitLoad();
-	void clear();
 	void FindExe(CString strFileName);
 	void FindExe(CStringArray& list);
 	void FindExe(CString strFileName, CStringArray& list);
@@ -25,7 +24,6 @@ private:
 	CString GetSystem32Path();
 	CString GetProgramFilesPath();
 	CString GetProgramFilesx86Path();
-
 
 	CStringArray aryList;
 };
