@@ -36,6 +36,9 @@
     <ClInclude Include="SearchThread.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Searchfilegame.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RecurseDirectories_test.cpp">
@@ -48,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SearchThread.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Searchfilegame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

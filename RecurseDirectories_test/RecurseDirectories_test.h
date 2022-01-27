@@ -6,7 +6,6 @@
 
 #include "resource.h"		
 
-
 class CRecurseDirectoriestestApp : public CWinApp
 {
 public:

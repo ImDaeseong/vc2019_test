@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "SearchThread.h"
-
 class CRecurseDirectoriestestDlg : public CDialogEx
 {
 public:
@@ -26,12 +24,7 @@ protected:
 public:
 	CListBox mlist1;
 	CListBox mlist2;
-
-	CString GetFilePath(CString strFilename);
-	void getDriveList(CStringArray& drivelist);
-	void RecurseDirectories(CStringArray& folderList, CStringArray& fileList, CString strDirectory, int nDepth);
-
-	
+		
 	SearchThread* GetThread() { return m_pThread; }
 	void SetThread() { m_pThread = NULL; }
 	
