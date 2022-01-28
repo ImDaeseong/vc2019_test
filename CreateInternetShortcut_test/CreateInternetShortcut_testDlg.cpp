@@ -80,7 +80,7 @@ void CCreateInternetShortcuttestDlg::CreateDesktopIcon()
 	{
 		for (int i = 0; i < 6; i++)
 		{
-			//바로가기 존재 여부 확인
+			//바로가기 존재 여부 확인 및 존재시 삭제
 			strShortcutPath.Format(_T("%s\\%s.url"), strDesktopPath, m_gameInfo[i].strName);
 			nExist = _waccess(strShortcutPath, 0);
 			if (nExist != -1)
@@ -88,9 +88,9 @@ void CCreateInternetShortcuttestDlg::CreateDesktopIcon()
 				::DeleteFile(strShortcutPath);
 			}
 
+			//바탕화면에 새로 바로가기 생성 
 			strTxt.Format(_T("%sTempIcon\\%d.txt"), strCurrentPath, i+1);
 			strIcon.Format(_T("%sTempIcon\\%d.ico"), strCurrentPath, i+1);
-
 			WritePrivateProfileString(_T("InternetShortcut"), _T("IconFile"), strIcon, strTxt);
 
 			nExist = _waccess(strTxt, 0);
