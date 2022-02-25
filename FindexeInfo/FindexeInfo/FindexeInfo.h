@@ -4,18 +4,16 @@
 	#error "PCH에 대해 이 파일을 포함하기 전에 'pch.h'를 포함합니다."
 #endif
 
-#include "resource.h"		
+#include "resource.h"		// 주 기호입니다.
 
-class CRecurseDirectoriestestApp : public CWinApp
+class CFindexeInfoApp : public CWinApp
 {
 public:
-	CRecurseDirectoriestestApp();
+	CFindexeInfoApp();
 
 public:
 	virtual BOOL InitInstance();
-
-
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CRecurseDirectoriestestApp theApp;
+extern CFindexeInfoApp theApp;

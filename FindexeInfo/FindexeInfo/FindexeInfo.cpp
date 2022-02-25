@@ -1,23 +1,23 @@
 ﻿#include "pch.h"
 #include "framework.h"
-#include "RecurseDirectories_test.h"
-#include "RecurseDirectories_testDlg.h"
+#include "FindexeInfo.h"
+#include "FindexeInfoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-BEGIN_MESSAGE_MAP(CRecurseDirectoriestestApp, CWinApp)
+BEGIN_MESSAGE_MAP(CFindexeInfoApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-CRecurseDirectoriestestApp::CRecurseDirectoriestestApp()
+CFindexeInfoApp::CFindexeInfoApp()
 {
 }
 
-CRecurseDirectoriestestApp theApp;
+CFindexeInfoApp theApp;
 
-BOOL CRecurseDirectoriestestApp::InitInstance()
+BOOL CFindexeInfoApp::InitInstance()
 {
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
@@ -32,8 +32,7 @@ BOOL CRecurseDirectoriestestApp::InitInstance()
 	CShellManager *pShellManager = new CShellManager;
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 
-
-	CRecurseDirectoriestestDlg dlg;
+	CFindexeInfoDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

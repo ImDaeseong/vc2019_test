@@ -1,12 +1,44 @@
 #include "pch.h"
 #include "Searchfilegame.h"
 
-Searchfilegame::Searchfilegame()
+void funcTest()
 {
-}
+	//시작시간
+	CTime tStart = CTime::GetCurrentTime();
 
-Searchfilegame::~Searchfilegame()
-{
+	CStringArray drivelist;
+	CStringArray folderList;
+	CStringArray fileList;
+
+	//존재하는 드라이브 조사	
+	Searchfilegame::getDriveList(drivelist);
+	int nSize = drivelist.GetSize();
+	for (int i = 0; i < nSize; i++)
+	{
+		CString strRootDir = drivelist.GetAt(i);
+		Searchfilegame::RecurseDirectories(folderList, fileList, strRootDir, 0);
+	}
+
+	//조사한 폴더 목록
+	nSize = folderList.GetSize();
+	for (int i = 0; i < nSize; i++)
+	{
+		CString strDir = folderList.GetAt(i);
+		OutputDebugString(strDir);
+	}
+
+	//찾은 파일 목록
+	nSize = fileList.GetSize();
+	for (int i = 0; i < nSize; i++)
+	{
+		CString strFile = fileList.GetAt(i);
+		OutputDebugString(strFile);
+	}
+
+	//완료 시간
+	CTime tEnd = CTime::GetCurrentTime();
+	CTimeSpan tResult = tEnd - tStart;
+	OutputDebugString(tResult.Format("%M:%S\n"));
 }
 
 int getcpucount()
@@ -26,7 +58,7 @@ uint64_t file_time_2_utc(const FILETIME* ftime)
 	return li.QuadPart;
 }
 
-int getProcesscpu()
+int Searchfilegame::getProcesscpu()
 {
 	static int nCount = -1;
 
@@ -86,11 +118,11 @@ CString Searchfilegame::GetFilePath(CString strFilename)
 //드라이브 개수
 void Searchfilegame::getDriveList(CStringArray& drivelist)
 {
-	CString sDrive = "";
+	CString sDrive = _T("");
 	for (int i = 0; i < 26; i++)
 	{
 		sDrive = "";
-		sDrive.Format("%c:", 'a' + i);
+		sDrive.Format(_T("%c:"), 'a' + i);
 
 		if (::PathFileExists(sDrive))
 		{
@@ -150,7 +182,7 @@ void Searchfilegame::RecurseDirectories(CStringArray& folderList, CStringArray& 
 				lstrcmpi(szFileName, _T("LeagueClient.exe")) == 0 ||
 				lstrcmpi(szFileName, _T("VALORANT.exe")) == 0)
 			{
-				int nExist = _access(szFullPath, 0);
+				int nExist = _waccess(szFullPath, 0);
 				if (nExist != -1)
 				{
 					fileList.Add(szFullPath);

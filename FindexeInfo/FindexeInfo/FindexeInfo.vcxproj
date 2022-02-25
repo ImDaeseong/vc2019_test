@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{F8CA77EE-B840-48B5-984F-B1C9E5E58327}</ProjectGuid>
+    <ProjectGuid>{50ACA980-B653-4646-B832-E5A22E4CCE23}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>RecurseDirectoriestest</RootNamespace>
+    <RootNamespace>FindexeInfo</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -38,14 +38,14 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -183,35 +183,35 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Searchfilegame.h" />
-    <ClInclude Include="SearchThread.h" />
+    <ClInclude Include="CGameMonitor.h" />
+    <ClInclude Include="FindexeInfo.h" />
+    <ClInclude Include="FindexeInfoDlg.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="RecurseDirectories_test.h" />
-    <ClInclude Include="RecurseDirectories_testDlg.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Searchfilegame.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Searchfilegame.cpp" />
-    <ClCompile Include="SearchThread.cpp" />
+    <ClCompile Include="CGameMonitor.cpp" />
+    <ClCompile Include="FindexeInfo.cpp" />
+    <ClCompile Include="FindexeInfoDlg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RecurseDirectories_test.cpp" />
-    <ClCompile Include="RecurseDirectories_testDlg.cpp" />
+    <ClCompile Include="Searchfilegame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="RecurseDirectoriestest.rc" />
+    <ResourceCompile Include="FindexeInfo.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\RecurseDirectoriestest.rc2" />
+    <None Include="res\FindexeInfo.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\RecurseDirectories_test.ico" />
+    <Image Include="res\FindexeInfo.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

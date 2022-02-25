@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RecurseDirectories_test.h">
+    <ClInclude Include="FindexeInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="RecurseDirectories_testDlg.h">
+    <ClInclude Include="FindexeInfoDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,7 +33,7 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SearchThread.h">
+    <ClInclude Include="CGameMonitor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Searchfilegame.h">
@@ -41,16 +41,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RecurseDirectories_test.cpp">
+    <ClCompile Include="FindexeInfo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="RecurseDirectories_testDlg.cpp">
+    <ClCompile Include="FindexeInfoDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SearchThread.cpp">
+    <ClCompile Include="CGameMonitor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Searchfilegame.cpp">
@@ -58,17 +58,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="RecurseDirectoriestest.rc">
+    <ResourceCompile Include="FindexeInfo.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\RecurseDirectoriestest.rc2">
+    <None Include="res\FindexeInfo.rc2">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\RecurseDirectories_test.ico">
+    <Image Include="res\FindexeInfo.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

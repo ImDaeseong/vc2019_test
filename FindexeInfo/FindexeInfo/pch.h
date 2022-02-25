@@ -12,6 +12,8 @@
 
 #include <io.h>
 #include "Searchfilegame.h"
-#include "SearchThread.h"
+#include "CGameMonitor.h"
+
+#define WM_GAMEINFO_RESULT	WM_USER + 1000
 
 #endif //PCH_H
