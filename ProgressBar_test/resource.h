@@ -33,12 +33,12 @@
 #define IDC_STATIC_PROGRESS_PNG         1008
 #define IDC_STATIC_PROGRESS_PNGA        1009
 #define IDC_STATIC_MSG                  1010
-#define IDC_STATIC_PROGRESS_TXT         1012
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        159
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1013
