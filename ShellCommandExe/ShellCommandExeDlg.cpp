@@ -52,7 +52,8 @@ void CShellCommandExeDlg::OnBnClickedButton2()
 
 void CShellCommandExeDlg::OnBnClickedButton3()
 {
+	//html 실행
 	CString strPath;
-	strPath.Format(_T(".\\html\\index.htm"), Common_Util::GetModulePath());
+	strPath.Format(_T(".\\html\\index.htm"));
 	::ShellExecute(NULL, _T("open"), strPath, NULL, NULL, SW_SHOW);
 }
