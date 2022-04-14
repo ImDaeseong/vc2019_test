@@ -29,6 +29,8 @@ BOOL CShellCommandExeDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 		
+	CString strCommand = Common_Util::GetCommand();
+	OutputDebugString(strCommand);
 
 	return TRUE;  
 }

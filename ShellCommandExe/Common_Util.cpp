@@ -1,6 +1,24 @@
 #include "pch.h"
 #include "Common_Util.h"
 
+CString Common_Util::GetCommand()
+{
+	CString strValue = _T("");
+	HKEY hKey = NULL;
+	if (RegOpenKey(HKEY_CLASSES_ROOT, _T("daeseong\\Shell\\Open"), &hKey) == ERROR_SUCCESS)
+	{
+		TCHAR tValue[MAX_PATH];
+		LONG lSize = sizeof(tValue);
+
+		if (RegQueryValue(hKey, _T("Command"), tValue, &lSize) == ERROR_SUCCESS)
+		{
+			strValue.Format(_T("%s\r\n"), tValue);
+		}
+		RegCloseKey(hKey);		
+	}
+	return strValue;
+}
+
 BOOL Common_Util::SetCommand(CString strExe)
 {		
 	HKEY hRootKey;
