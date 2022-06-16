@@ -95,18 +95,17 @@ void CsearchInstallinfotestDlg::searchReg(BOOL bWOW)
 	HKEY hKey = NULL;
 	HKEY hSubKey = NULL;
 
-	TCHAR tKeyName[MAX_PATH] = { 0 };
-	TCHAR tDisplayName[MAX_PATH] = { 0 };
-	DWORD dSize = MAX_PATH;
-
 	if (ERROR_SUCCESS != RegOpenKeyEx(HKEY_LOCAL_MACHINE, lpkey, 0, KEY_ALL_ACCESS, &hKey))
 		return;
 
 	DWORD dwIndex = 0;
 	CString strSubkey;
-
-	CString strkey;
+	CString strkeyName;
 	CString strDisplayName;
+
+	TCHAR tKeyName[MAX_PATH] = { 0 };
+	TCHAR tDisplayName[MAX_PATH] = { 0 };
+	DWORD dSize = MAX_PATH;
 
 	while (RegEnumKey(hKey, dwIndex++, tKeyName, dSize) != ERROR_NO_MORE_ITEMS)
 	{
@@ -119,15 +118,18 @@ void CsearchInstallinfotestDlg::searchReg(BOOL bWOW)
 		if (ERROR_SUCCESS != RegQueryValueEx(hSubKey, L"DisplayName", 0, 0, (LPBYTE)tDisplayName, &dSize))
 			continue;
 
-		strkey.Format(L"%s", tKeyName);
+		//정보 저장
+		strkeyName.Format(L"%s", tKeyName);
 		strDisplayName.Format(L"%s",tDisplayName);
-		AddSetupInfo(strkey, strDisplayName);
+		AddSetupInfo(strkeyName, strDisplayName);
 
-		dSize = MAX_PATH;
+		//초기화
+		::RegCloseKey(hSubKey);
+
 		::ZeroMemory(tKeyName, MAX_PATH);
 		::ZeroMemory(tDisplayName, MAX_PATH);
+		dSize = MAX_PATH;
 
-		::RegCloseKey(hSubKey);
 	}
 	::RegCloseKey(hKey);
 }
