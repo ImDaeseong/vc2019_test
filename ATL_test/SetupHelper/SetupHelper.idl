@@ -1,0 +1,38 @@
+﻿// SetupHelper.idl: SetupHelper의 IDL 소스
+//
+
+// 이 파일은 MIDL 도구에 의해 처리되어
+// 형식 라이브러리(SetupHelper.tlb) 및 마샬링 코드를 생성합니다.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(341a0f93-dc36-42fb-93dc-da97ac84f45f),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IShareFun : IDispatch
+{
+	[id(1)] HRESULT GetSystemPath([out, retval] VARIANT* vtPath);
+	[id(2)] HRESULT GetProgramFilesPath([out, retval] VARIANT* vtPath);
+};
+[
+	uuid(7230b8ee-ba81-489c-b355-4d78ca9ba529),
+	version(1.0),
+]
+library SetupHelperLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(6da4f7dc-a952-4936-a557-433e324a3ac6)
+	]
+	coclass ShareFun
+	{
+		[default] interface IShareFun;
+	};
+};
+
+import "shobjidl.idl";

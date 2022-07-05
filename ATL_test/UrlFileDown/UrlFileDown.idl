@@ -1,0 +1,37 @@
+﻿// UrlFileDown.idl: UrlFileDown의 IDL 소스
+//
+
+// 이 파일은 MIDL 도구에 의해 처리되어
+// 형식 라이브러리(UrlFileDown.tlb) 및 마샬링 코드를 생성합니다.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(e3bd8ea0-363c-48e4-bccc-60dce300a55a),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IHttpDown : IDispatch
+{
+	[id(1)] HRESULT GetDownloadFile([in] VARIANT vtUrl, [in] VARIANT vtFile, [out, retval] VARIANT_BOOL* pVal);
+};
+[
+	uuid(30483ccf-847c-417d-a76c-ca897e60bf0e),
+	version(1.0),
+]
+library UrlFileDownLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(3055f46c-594b-4cb6-8a72-9f1d866e2ae2)
+	]
+	coclass HttpDown
+	{
+		[default] interface IHttpDown;
+	};
+};
+
+import "shobjidl.idl";
