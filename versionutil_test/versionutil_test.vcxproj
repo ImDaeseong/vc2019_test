@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="converUtil.h" />
     <ClInclude Include="fileversionInfo.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="IpInfo.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="versionutil_testDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="converUtil.cpp" />
     <ClCompile Include="fileversionInfo.cpp" />
     <ClCompile Include="IpInfo.cpp" />
     <ClCompile Include="pch.cpp">

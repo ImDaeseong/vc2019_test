@@ -33,7 +33,7 @@
 #include "IpInfo.h"
 #include "tiemInfo.h"
 #include "requestInfo.h"
-
+#include "converUtil.h"
 
 
 #ifdef _UNICODE

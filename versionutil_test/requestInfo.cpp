@@ -35,12 +35,14 @@ bool requestInfo::getWebPage(CString strUrl)
 		pFile->SetReadBufferSize(4096);
 		while (pFile->ReadString(strData))
 		{
-			szContent = szContent + CA2W((LPCSTR)strData.GetBuffer(), CP_UTF8) + _T("\r\n");
+			//멀티바이트 convert 유니코드
+			szContent += CA2W((LPCSTR)strData.GetBuffer(), CP_UTF8);
 		}		
 		pFile->Close();
 		session.Close();
 	}
 
-	OutputDebugString(szContent);
+	//OutputDebugString(szContent);
+
 	return true;
 }
