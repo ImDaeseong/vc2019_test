@@ -14,6 +14,8 @@ END_MESSAGE_MAP()
 CCheckboxtestApp::CCheckboxtestApp()
 {
 	m_gdiplusToken = NULL;
+
+	m_strParam = _T("");
 }
 
 CCheckboxtestApp theApp;
@@ -23,6 +25,10 @@ BOOL CCheckboxtestApp::InitInstance()
 	HANDLE hMutex = ::CreateMutex(NULL, FALSE, _T("CheckboxtestModuleInstance_"));
 	if (ERROR_ALREADY_EXISTS == ::GetLastError())
 		return FALSE;
+
+	CCommandLineInfo cmdInfo;
+	ParseCommandLine(cmdInfo);
+	m_strParam = cmdInfo.m_strFileName;
 
 	CoInitialize(NULL);
 

@@ -18,6 +18,9 @@ public:
 
 protected:
 	ULONG_PTR m_gdiplusToken;
+
+public:
+	CString m_strParam;
 };
 
 extern CCheckboxtestApp theApp;

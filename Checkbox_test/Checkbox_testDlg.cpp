@@ -308,6 +308,12 @@ void CCheckboxtestDlg::OnBnClickedRemoveButton()
 		}
 		OutputDebugString(strText);
 	}
+
+	CString strParam = ((CCheckboxtestApp*)AfxGetApp())->m_strParam;
+	if (strParam != "")
+	{
+		OutputDebugString(strParam);
+	}
 }
 
 void CCheckboxtestDlg::OnBnClickedCancelButton()
