@@ -110,6 +110,7 @@ void EditDlg::InitControls()
 
 CString EditDlg::GetEditText()
 {
+	//입력값 반환
 	UpdateData(true);
 	
 	CString strText;

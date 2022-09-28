@@ -210,6 +210,7 @@ void CCheckboxtestDlg::DrawSkin(CDC* pDC)
 		m_pBackSkin->m_pBitmap->GetHeight(),
 		UnitPixel);
 
+
 	if (m_btnCheck1.IsAvailableDraw())
 		m_btnCheck1.OnDrawLayerdWindow(gps);
 
@@ -260,6 +261,7 @@ void CCheckboxtestDlg::InitControls()
 
 
 	m_btnRemove.SetImage(MAKEINTRESOURCE(IDB_REMOVE_PNG), _T("PNG"), AfxGetApp()->m_hInstance, 244, 396, 1);
+
 	m_btnCancel.SetImage(MAKEINTRESOURCE(IDB_CANCEL_PNG), _T("PNG"), AfxGetApp()->m_hInstance, 404, 396, 1);
 }
 

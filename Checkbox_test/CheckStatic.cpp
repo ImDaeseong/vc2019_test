@@ -5,6 +5,8 @@
 CCheckStatic::CCheckStatic()
 {
 	m_nIndex = 0;
+
+	//border = false 이면 투명 static
 	m_bBorder = TRUE;
 }
 

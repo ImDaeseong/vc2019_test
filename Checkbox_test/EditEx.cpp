@@ -52,6 +52,7 @@ void CEditEx::OnNcPaint()
 
 void CEditEx::OnEnSetfocus()
 {
+	//한글 입력
 	if( GetSafeHwnd() != NULL )
 	{
 		HIMC himc = ImmGetContext(GetSafeHwnd());	
@@ -94,6 +95,5 @@ void CEditEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	//GetWindowText(m_strInput);
 	//OutputDebugString(m_strInput + _T("\r\n"));
-
 	CEdit::OnChar(nChar, nRepCnt, nFlags);
 }

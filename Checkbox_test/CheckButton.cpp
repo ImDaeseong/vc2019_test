@@ -35,7 +35,6 @@ void CCheckButton::DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/)
 void CCheckButton::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	m_Clicked = !m_Clicked;
-	//RedrawWindow();
 	GetOwner()->SendMessage(WM_PAINT, 0, 0);
 	//Invalidate();
 
@@ -155,7 +154,6 @@ BOOL CCheckButton::IsAvailableDraw()
 void CCheckButton::SetCheckState()
 {
 	m_Clicked = !m_Clicked;
-	//RedrawWindow();
 	GetOwner()->SendMessage(WM_PAINT, 0, 0);
 	//Invalidate();
 }
