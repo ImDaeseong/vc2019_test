@@ -113,14 +113,24 @@ void CsearchInstallinfotestDlg::searchReg(BOOL bWOW)
 		strSubkey.Format(L"%s\\%s", lpkey, tKeyName);
 
 		if (ERROR_SUCCESS != RegOpenKeyEx(HKEY_LOCAL_MACHINE, strSubkey, 0, KEY_QUERY_VALUE, &hSubKey))
-			continue;
-
+		{
+			strkeyName = _T("");
+		}
+		else
+		{
+			strkeyName.Format(L"%s", tKeyName);
+		}
+		
 		if (ERROR_SUCCESS != RegQueryValueEx(hSubKey, L"DisplayName", 0, 0, (LPBYTE)tDisplayName, &dSize))
-			continue;
-
+		{
+			strDisplayName = _T("");
+		}
+		else
+		{
+			strDisplayName.Format(L"%s", tDisplayName);
+		}
+		
 		//정보 저장
-		strkeyName.Format(L"%s", tKeyName);
-		strDisplayName.Format(L"%s",tDisplayName);
 		AddSetupInfo(strkeyName, strDisplayName);
 
 		//초기화
@@ -142,4 +152,8 @@ void CsearchInstallinfotestDlg::GetSetupInfoList()
 	{
 		InsertListView(m_SetupInfo[i].strkey, m_SetupInfo[i].strDisplayName);
 	}
+
+	//CString strMsg;
+	//strMsg.Format(_T("총개수:%d"), m_ListCtrl.GetItemCount());
+	//OutputDebugString(strMsg);
 }
