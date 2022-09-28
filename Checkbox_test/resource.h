@@ -10,10 +10,12 @@
 #define IDB_CANCEL_PNG                  143
 #define IDD_EDIT_DIALOG                 144
 #define IDC_CHECK_BUTTON1               1002
+#define IDC_CHECK_BUTTON2               1003
 #define IDC_CHECK_STATIC1               1009
 #define IDC_REMOVE_BUTTON               1010
 #define IDC_CANCEL_BUTTON               1011
 #define IDC_EDIT1                       1012
+#define IDC_CHECK_STATIC2               1012
 
 // Next default values for new objects
 // 

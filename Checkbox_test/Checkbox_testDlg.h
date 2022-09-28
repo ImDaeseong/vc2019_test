@@ -6,6 +6,11 @@ class CCheckboxtestDlg : public CDialogEx
 public:
 	CCheckboxtestDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
+	EditDlg* m_pEditDlg;
+	void CreateEditDlg();
+	void DestroyEditDlg();
+	void SetChildPos();
+
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_CHECKBOX_TEST_DIALOG };
 #endif
@@ -34,14 +39,12 @@ private:
 
 public:
 	CCheckButton m_btnCheck1;
-	CCheckStatic m_StaticCheck1;
+	CCheckButton m_btnCheck2;
+	CCheckStatic m_StaticCheck1;	
+	CCheckStatic m_StaticCheck2;
+
 	CSkinButton m_btnRemove;
 	CSkinButton m_btnCancel;
 
-	void SetCheckIndex(int nIndex);
-	
-	EditDlg* m_pEditDlg;
-	void CreateEditDlg();
-	void DestroyEditDlg();
-	void SetChildPos();
+	void SetCheckIndex(int nIndex);	
 };

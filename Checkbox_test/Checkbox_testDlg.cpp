@@ -85,7 +85,9 @@ void CCheckboxtestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHECK_BUTTON1, m_btnCheck1);
-	DDX_Control(pDX, IDC_CHECK_STATIC1, m_StaticCheck1);
+	DDX_Control(pDX, IDC_CHECK_BUTTON2, m_btnCheck2);
+	DDX_Control(pDX, IDC_CHECK_STATIC1, m_StaticCheck1);	
+	DDX_Control(pDX, IDC_CHECK_STATIC2, m_StaticCheck2);
 	DDX_Control(pDX, IDC_REMOVE_BUTTON, m_btnRemove);
 	DDX_Control(pDX, IDC_CANCEL_BUTTON, m_btnCancel);
 }
@@ -214,7 +216,12 @@ void CCheckboxtestDlg::DrawSkin(CDC* pDC)
 	if (m_btnCheck1.IsAvailableDraw())
 		m_btnCheck1.OnDrawLayerdWindow(gps);
 
+	if (m_btnCheck2.IsAvailableDraw())
+		m_btnCheck2.OnDrawLayerdWindow(gps);
+
+
 	m_StaticCheck1.OnDrawLayerdWindow(gps);
+	m_StaticCheck2.OnDrawLayerdWindow(gps);
 
 
 	if (m_btnRemove.IsAvailableDraw())
@@ -254,11 +261,13 @@ void CCheckboxtestDlg::InitControls()
 	CRect rc;
 	GetClientRect(&rc);
 
-	m_btnCheck1.SetImage(MAKEINTRESOURCE(IDB_CHECK_PNG), _T("PNG"), AfxGetApp()->m_hInstance, 48, 139, 2);
-	
-	m_StaticCheck1.MoveWindow(46, 138, 254, 28);
+	m_btnCheck1.SetImage(MAKEINTRESOURCE(IDB_CHECK_PNG), _T("PNG"), AfxGetApp()->m_hInstance, 48, 139, 2);	
+	m_StaticCheck1.MoveWindow(46, 137, 254, 28);
 	m_StaticCheck1.SetCheckIndex(1);
 
+	m_btnCheck2.SetImage(MAKEINTRESOURCE(IDB_CHECK_PNG), _T("PNG"), AfxGetApp()->m_hInstance, 397, 139, 2);
+	m_StaticCheck2.MoveWindow(395, 136, 254, 28);
+	m_StaticCheck2.SetCheckIndex(2);
 
 	m_btnRemove.SetImage(MAKEINTRESOURCE(IDB_REMOVE_PNG), _T("PNG"), AfxGetApp()->m_hInstance, 244, 396, 1);
 
@@ -267,19 +276,36 @@ void CCheckboxtestDlg::InitControls()
 
 void CCheckboxtestDlg::SetCheckIndex(int nIndex)
 {
-	m_btnCheck1.SetCheckState();
+	if (nIndex == 1)
+	{
+		m_btnCheck1.SetCheckState();
+	}
+	else if (nIndex == 2)
+	{
+		m_btnCheck2.SetCheckState();
+	}
 }
 
 void CCheckboxtestDlg::OnBnClickedRemoveButton()
 {
 	if (m_btnCheck1.GetCheckState())
 	{
-		OutputDebugString(_T("m_btnCheck1 check"));
+		OutputDebugString(_T("check1"));
+	}
+	
+	if (m_btnCheck2.GetCheckState())
+	{
+		OutputDebugString(_T("check2"));
 	}
 
 	if (m_pEditDlg)
 	{
 		CString strText = m_pEditDlg->GetEditText();
+		if (strText == _T("30자까지 등록가능합니다."))
+		{
+			AfxMessageBox(_T("문자를 입력하세요."));
+			return;
+		}
 		OutputDebugString(strText);
 	}
 }
