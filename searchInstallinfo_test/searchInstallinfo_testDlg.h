@@ -29,12 +29,12 @@ private:
 	std::vector<InstallInfo> m_SetupInfo;
 
 	void AddSetupInfo(CString strkey, CString strDisplayName);
-
 	void ClearSetupInfo();
-	void searchReg(BOOL bWOW);
+	void searchRegInfo();
+	CString searchSubRegInfo(CString strSubkey);
 	void GetSetupInfoList();
 
 	void InitCtrl();
 	void InsertListView(CString strkey, CString strDisplayName);
-	CListCtrl m_ListCtrl;
+	CListCtrl m_ListCtrl;	
 };

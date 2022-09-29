@@ -32,7 +32,8 @@ private:
 
 	void AddInfo(CString strkey, CString strDisplayName, CString strUninstallString);
 	void ClearInfo();
-	void GetRegUninstallInfo();
+	void searchRegInfo();
+	CString searchSubRegInfo(CString strSubkey);
 	void SearchInfoList();
 	
 	void InitCtrl();
