@@ -25,7 +25,6 @@ BEGIN_MESSAGE_MAP(CFindBrowserExtensionsDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON1, &CFindBrowserExtensionsDlg::OnBnClickedButton1)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &CFindBrowserExtensionsDlg::OnNMDblclkList1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CFindBrowserExtensionsDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 BOOL CFindBrowserExtensionsDlg::PreTranslateMessage(MSG* pMsg)
@@ -136,16 +135,6 @@ void CFindBrowserExtensionsDlg::InitPath()
 	SetDlgItemText(IDC_STATIC_FIREFOX, _T("Firefox path - ") + strFirefoxExtension + _T("\\전체폴더검색\\extensions"));
 }
 
-CString CFindBrowserExtensionsDlg::GetModulePath()
-{
-	TCHAR tPath[MAX_PATH];
-	::GetModuleFileName(NULL, tPath, MAX_PATH);
-
-	CString strPath = tPath;
-	strPath = strPath.Left(strPath.ReverseFind('\\') + 1);
-	return strPath;
-}
-
 CString CFindBrowserExtensionsDlg::GetFolderName(CString strFolderName)
 {
 	int nPos = strFolderName.ReverseFind('\\');
@@ -240,32 +229,4 @@ void CFindBrowserExtensionsDlg::AddExtensionInfo(CString strItem, CString strDis
 void CFindBrowserExtensionsDlg::ClearExtensionInfo()
 {
 	m_Extensions.clear();
-}
-
-void CFindBrowserExtensionsDlg::OnBnClickedButton2()
-{
-	CString strFilePath;
-	CString strIndex;
-	CString strCount;
-
-	//경로
-	strFilePath.Format(_T("%s\\ExtensionsInfo.ini"), GetModulePath());
-
-	//총개수
-	strCount.Format(_T("%d"), m_Extensions.size());
-
-	CIniFile ini;
-	ini.CreateIniFile(strFilePath);
-	ini.SetTotalCount(strCount);
-
-	//정보
-	int nIndex = 0;
-	for (int i = 0; i < m_Extensions.size(); i++)
-	{
-		nIndex ++;
-		strIndex.Format(_T("%d"), nIndex);
-
-		ini.SetInfoType(strIndex, m_Extensions[i].strDisplayName);
-		ini.SetInfo(strIndex, m_Extensions[i].strItem);
-	}
 }

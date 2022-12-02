@@ -188,7 +188,6 @@
     <ClInclude Include="FindBrowserExtensions.h" />
     <ClInclude Include="FindBrowserExtensionsDlg.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="IniFile.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -196,7 +195,6 @@
   <ItemGroup>
     <ClCompile Include="FindBrowserExtensions.cpp" />
     <ClCompile Include="FindBrowserExtensionsDlg.cpp" />
-    <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
