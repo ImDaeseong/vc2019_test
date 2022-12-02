@@ -249,7 +249,7 @@ void CFindBrowserExtensionsDlg::OnBnClickedButton2()
 	CString strCount;
 
 	//경로
-	strFilePath.Format(_T("%s\\exetensionInfo.ini"), GetModulePath());
+	strFilePath.Format(_T("%s\\ExtensionsInfo.ini"), GetModulePath());
 
 	//총개수
 	strCount.Format(_T("%d"), m_Extensions.size());

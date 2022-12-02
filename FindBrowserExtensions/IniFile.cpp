@@ -31,7 +31,7 @@ BOOL CIniFile::CreateIniFile(CString strIniPath)
 
 BOOL CIniFile::SetTotalCount(CString strCount)
 {
-	if (!SetProfileString(_T("ExetensionList"), _T("COUNT"), strCount))
+	if (!SetProfileString(_T("ExtensionsList"), _T("COUNT"), strCount))
 	{
 		return FALSE;
 	}
@@ -40,13 +40,13 @@ BOOL CIniFile::SetTotalCount(CString strCount)
 
 int CIniFile::GetTotalCount()
 {
-	int nCount = GetPrivateProfileInt(_T("ExetensionList"), _T("COUNT"), 0, mFilePath);
+	int nCount = GetPrivateProfileInt(_T("ExtensionsList"), _T("COUNT"), 0, mFilePath);
 	return nCount;
 }
 
 BOOL CIniFile::SetInfo(CString strIndex, CString strName)
 {
-	if (!SetProfileString(strIndex, _T("Extname"), strName))
+	if (!SetProfileString(strIndex, _T("ExtensionsName"), strName))
 	{
 		return FALSE;
 	}
@@ -58,7 +58,7 @@ CString CIniFile::GetInfo(CString strIndex)
 	TCHAR tName[MAX_PATH] = { _T("") };
 	CString strName = _T("");
 
-	DWORD dwResult = GetProfileString(strIndex, _T("Extname"), _T(""), tName, MAX_PATH);
+	DWORD dwResult = GetProfileString(strIndex, _T("ExtensionsName"), _T(""), tName, MAX_PATH);
 	strName.Format(_T("%s"), tName);
 	return strName;
 }
