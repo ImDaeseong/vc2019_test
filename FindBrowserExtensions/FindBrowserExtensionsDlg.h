@@ -26,16 +26,20 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
 	afx_msg void OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 
 private:
 
 	void InitPath();
+	CString GetModulePath();
 	CString GetFolderName(CString strFolderName);
 	void searchExtension(CString strDirectory, BOOL bEdge = FALSE);
+	void searchExtensionFireFox(CString strDirectory, BOOL bFirefox = FALSE);
 	CString strChromeExtension;
 	CString strEdgeExtension;
+	CString strFirefoxExtension;
 
 	std::vector<ExtensionInfo> m_Extensions;
 	void AddExtensionInfo(CString strItem, CString strDisplayName);
@@ -44,5 +48,5 @@ private:
 	void InitCtrl();
 	void InsertListView(CString strItem, CString strDisplayName);
 	void ViewListInfo();
-	CListCtrl m_ListCtrl;		
+	CListCtrl m_ListCtrl;	
 };

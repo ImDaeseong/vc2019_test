@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(CFindBrowserExtensionsDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON1, &CFindBrowserExtensionsDlg::OnBnClickedButton1)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &CFindBrowserExtensionsDlg::OnNMDblclkList1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CFindBrowserExtensionsDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 BOOL CFindBrowserExtensionsDlg::PreTranslateMessage(MSG* pMsg)
@@ -90,6 +91,7 @@ void CFindBrowserExtensionsDlg::OnBnClickedButton1()
 	ClearExtensionInfo();
 	searchExtension(strChromeExtension);
 	searchExtension(strEdgeExtension, TRUE);
+	searchExtensionFireFox(strFirefoxExtension, TRUE);
 	ViewListInfo();
 }
 
@@ -104,8 +106,10 @@ void CFindBrowserExtensionsDlg::OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 	if (strDisplayName == _T("edge"))
 		strPath.Format(_T("%s"), strEdgeExtension);
-	else
-		strPath.Format(_T("%s"), strChromeExtension);		
+	else if (strDisplayName == _T("chrome"))
+		strPath.Format(_T("%s"), strChromeExtension);
+	else if (strDisplayName == _T("firefox"))
+		strPath.Format(_T("%s"), strFirefoxExtension);
 	
 	ShellExecute(GetSafeHwnd(), NULL, strPath, NULL, NULL, SW_SHOW);
 
@@ -123,8 +127,23 @@ void CFindBrowserExtensionsDlg::InitPath()
 	::SHGetSpecialFolderPath(NULL, szPath, CSIDL_LOCAL_APPDATA, FALSE);
 	strEdgeExtension.Format(_T("%s\\Microsoft\\Edge\\User Data\\Default\\Extensions"), szPath);
 
+	ZeroMemory(szPath, MAX_PATH);
+	::SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, FALSE);
+	strFirefoxExtension.Format(_T("%s\\Mozilla\\Firefox\\Profiles\\"), szPath);
+
 	SetDlgItemText(IDC_STATIC_CHROME, _T("chrome path - ") + strChromeExtension);
 	SetDlgItemText(IDC_STATIC_EDGE, _T("edge path - ") + strEdgeExtension);
+	SetDlgItemText(IDC_STATIC_FIREFOX, _T("Firefox path - ") + strFirefoxExtension + _T("\\전체폴더검색\\extensions"));
+}
+
+CString CFindBrowserExtensionsDlg::GetModulePath()
+{
+	TCHAR tPath[MAX_PATH];
+	::GetModuleFileName(NULL, tPath, MAX_PATH);
+
+	CString strPath = tPath;
+	strPath = strPath.Left(strPath.ReverseFind('\\') + 1);
+	return strPath;
 }
 
 CString CFindBrowserExtensionsDlg::GetFolderName(CString strFolderName)
@@ -166,6 +185,50 @@ void CFindBrowserExtensionsDlg::searchExtension(CString strDirectory, BOOL bEdge
 	finder.Close();
 }
 
+void CFindBrowserExtensionsDlg::searchExtensionFireFox(CString strDirectory, BOOL bFirefox)
+{
+	CFileFind file;
+	BOOL bFind = file.FindFile(strDirectory + _T("\\*.*"));
+	CString strFolderItem, strFileExit, strTemp;
+
+	while (bFind)
+	{
+		bFind = file.FindNextFile();
+		if (file.IsDirectory() && !file.IsDots())
+		{
+			strFolderItem = file.GetFilePath();
+
+			CString strExetension = GetFolderName(strFolderItem);
+			if (lstrcmpi(strExetension, _T("extensions")) == 0)
+			{
+				//파일 경로를 찾았으므로 경로 업데이트
+				strFirefoxExtension = strFolderItem;
+				SetDlgItemText(IDC_STATIC_FIREFOX, _T("Firefox path - ") + strFirefoxExtension);
+
+				searchExtensionFireFox(strFolderItem, true);
+			}
+			else
+			{
+				searchExtensionFireFox(strFolderItem, false);
+			}
+		}
+
+		strFolderItem = file.GetFileName();
+		if (!file.IsDots())
+		{
+			if (file.IsDirectory())
+				continue;
+
+			if (bFirefox)
+			{
+				CString strFileName;
+				strFileName = strFolderItem.MakeLower();
+				AddExtensionInfo(strFileName, _T("firefox"));
+			}
+		}
+	}
+}
+
 void CFindBrowserExtensionsDlg::AddExtensionInfo(CString strItem, CString strDisplayName)
 {
 	ExtensionInfo info;
@@ -177,4 +240,32 @@ void CFindBrowserExtensionsDlg::AddExtensionInfo(CString strItem, CString strDis
 void CFindBrowserExtensionsDlg::ClearExtensionInfo()
 {
 	m_Extensions.clear();
+}
+
+void CFindBrowserExtensionsDlg::OnBnClickedButton2()
+{
+	CString strFilePath;
+	CString strIndex;
+	CString strCount;
+
+	//경로
+	strFilePath.Format(_T("%s\\exetensionInfo.ini"), GetModulePath());
+
+	//총개수
+	strCount.Format(_T("%d"), m_Extensions.size());
+
+	CIniFile ini;
+	ini.CreateIniFile(strFilePath);
+	ini.SetTotalCount(strCount);
+
+	//정보
+	int nIndex = 0;
+	for (int i = 0; i < m_Extensions.size(); i++)
+	{
+		nIndex ++;
+		strIndex.Format(_T("%d"), nIndex);
+
+		ini.SetInfoType(strIndex, m_Extensions[i].strDisplayName);
+		ini.SetInfo(strIndex, m_Extensions[i].strItem);
+	}
 }
