@@ -4,6 +4,7 @@ struct ExtensionInfo
 {
 	CString strItem;
 	CString strDisplayName;
+	CString strItemFullPath;
 };
 
 class CFindBrowserExtensionsDlg : public CDialogEx
@@ -31,20 +32,34 @@ protected:
 
 private:
 
+	void FindExetions();
 	void InitPath();
+	BOOL DeleteFolderAll(CString strFolderPath);
+	BOOL CloseAllProcess(CString strInputFileName);
+	CString GetFolderPath(CString strFolderPath);
 	CString GetFolderName(CString strFolderName);
-	void searchExtension(CString strDirectory, BOOL bEdge = FALSE);
-	void searchExtensionFireFox(CString strDirectory, BOOL bFirefox = FALSE);
-	CString strChromeExtension;
+
+	void searchExtension(CString strDirectory, BOOL bEdge = FALSE);	
+	void searchExtensionFireFox(CString strDirectory, BOOL bFirefox = FALSE);	
 	CString strEdgeExtension;
 	CString strFirefoxExtension;
 
+	void SearchPathAllProfile(CString strDirectory);
+	void SearchChromeProfile(CString strDirectory, int nDepth);
+	void AddChromeProfile();
+
+	CString strChromeSearchPath1;
+	CString strChromeSearchPath2;
+	CString strChromeSearchPathProfile;
+	CStringArray ArChromeExtensionProfile;
+
+
 	std::vector<ExtensionInfo> m_Extensions;
-	void AddExtensionInfo(CString strItem, CString strDisplayName);
+	void AddExtensionInfo(CString strItem, CString strDisplayName, CString strItemFullPath);
 	void ClearExtensionInfo();
 
 	void InitCtrl();
-	void InsertListView(CString strItem, CString strDisplayName);
+	void InsertListView(CString strItem, CString strDisplayName, CString strItemFullPath);
 	void ViewListInfo();
 	CListCtrl m_ListCtrl;	
 };

@@ -13,5 +13,7 @@
 #include <vector>
 using namespace std;
 
+#include <io.h>
+#include <tlhelp32.h>
 
 #endif //PCH_H
