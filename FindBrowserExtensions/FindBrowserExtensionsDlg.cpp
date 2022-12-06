@@ -4,19 +4,15 @@
 #include "FindBrowserExtensionsDlg.h"
 #include "afxdialogex.h"
 
-#define _CRT_SECURE_NO_WARNINGS 
-#pragma warnings(disable: 4996)
-#include < stdio.h >
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-
 CFindBrowserExtensionsDlg::CFindBrowserExtensionsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FINDBROWSEREXTENSIONS_DIALOG, pParent)
 {
+	ClearExtensionInfo();
 }
 
 void CFindBrowserExtensionsDlg::DoDataExchange(CDataExchange* pDX)
@@ -439,4 +435,6 @@ void CFindBrowserExtensionsDlg::AddExtensionInfo(CString strItem, CString strDis
 void CFindBrowserExtensionsDlg::ClearExtensionInfo()
 {
 	m_Extensions.clear();
+
+	ArChromeExtensionProfile.RemoveAll();
 }
