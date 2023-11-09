@@ -44,14 +44,22 @@ private:
 	CString strEdgeExtension;
 	CString strFirefoxExtension;
 
+
 	void SearchPathAllProfile(CString strDirectory);
 	void SearchChromeProfile(CString strDirectory, int nDepth);
 	void AddChromeProfile();
-
 	CString strChromeSearchPath1;
 	CString strChromeSearchPath2;
 	CString strChromeSearchPathProfile;
 	CStringArray ArChromeExtensionProfile;
+
+
+	void SearchPathAllNaverWhaleProfile(CString strDirectory);
+	void SearchNaverWhaleProfile(CString strDirectory, int nDepth);
+	void AddNaverWhaleProfile();
+	void SearchPathNaverWhaleAll(CString strDirectory);
+	CString strNaverWhaleSearchPath;
+	CStringArray ArNaverWhaleExtensionProfile;
 
 
 	std::vector<ExtensionInfo> m_Extensions;

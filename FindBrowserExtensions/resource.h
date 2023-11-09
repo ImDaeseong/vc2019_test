@@ -12,6 +12,8 @@
 #define IDC_STATIC_FIREFOX              1004
 #define IDC_STATIC_CHROME2              1005
 #define IDC_STATIC_CHROME3              1006
+#define IDC_STATIC_NAVERWHALE1          1007
+#define IDC_STATIC_NAVERWHALE2          1008
 
 // Next default values for new objects
 // 

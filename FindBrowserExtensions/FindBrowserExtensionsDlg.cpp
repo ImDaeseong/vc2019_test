@@ -115,6 +115,7 @@ void CFindBrowserExtensionsDlg::FindExetions()
 	searchExtension(strEdgeExtension, TRUE);
 	searchExtensionFireFox(strFirefoxExtension, TRUE);
 	SearchPathAllProfile(strChromeSearchPathProfile);
+	SearchPathAllNaverWhaleProfile(strNaverWhaleSearchPath);
 
 	ViewListInfo();
 }
@@ -147,11 +148,18 @@ void CFindBrowserExtensionsDlg::InitPath()
 	::SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, FALSE);
 	strFirefoxExtension.Format(_T("%s\\Mozilla\\Firefox\\Profiles\\"), szPath);
 
+	//naver whale
+	ZeroMemory(szPath, MAX_PATH);
+	::SHGetSpecialFolderPath(NULL, szPath, CSIDL_LOCAL_APPDATA, FALSE);
+	strNaverWhaleSearchPath.Format(_T("%s\\Naver\\Naver Whale\\User Data"), szPath);
+
 	SetDlgItemText(IDC_STATIC_CHROME1, _T("chrome path1 - ") + strChromeSearchPath1);
 	SetDlgItemText(IDC_STATIC_CHROME2, _T("chrome path2 - ") + strChromeSearchPath2);
 	SetDlgItemText(IDC_STATIC_CHROME3, _T("chrome path3 - ") + strChromeSearchPathProfile + _T("\\profile 포함된 이름 전체 검색"));
 	SetDlgItemText(IDC_STATIC_EDGE, _T("edge path - ") + strEdgeExtension);
 	SetDlgItemText(IDC_STATIC_FIREFOX, _T("Firefox path - ") + strFirefoxExtension + _T("\\전체폴더검색\\extensions"));
+	SetDlgItemText(IDC_STATIC_NAVERWHALE1, _T("naverwhale path1 - ") + strNaverWhaleSearchPath);
+	SetDlgItemText(IDC_STATIC_NAVERWHALE2, _T("naverwhale path2 - ") + strNaverWhaleSearchPath);
 }
 
 BOOL CFindBrowserExtensionsDlg::DeleteFolderAll(CString strFolderPath)
@@ -423,6 +431,90 @@ void CFindBrowserExtensionsDlg::AddChromeProfile()
 	}
 }
 
+void CFindBrowserExtensionsDlg::SearchPathAllNaverWhaleProfile(CString strDirectory)
+{
+	ArNaverWhaleExtensionProfile.Add(strDirectory + CString("\\Default"));
+
+	SearchNaverWhaleProfile(strDirectory, 0);
+	AddNaverWhaleProfile();
+}
+
+void CFindBrowserExtensionsDlg::SearchNaverWhaleProfile(CString strDirectory, int nDepth)
+{
+	CString strFilter = strDirectory + _T("\\*.*");
+
+	CFileFind finder;
+	BOOL bSearch = finder.FindFile(strFilter, 0);
+	while (bSearch)
+	{
+		bSearch = finder.FindNextFile();
+
+		if (finder.IsDots())
+			continue;
+
+		if (finder.IsDirectory())
+		{
+			if (nDepth > 0)
+				continue;
+
+			CString szFolderPath = finder.GetFilePath();
+
+			CString strTemp = szFolderPath.MakeLower();
+			if (strTemp.Find(_T("profile")) > 0)
+			{
+				ArNaverWhaleExtensionProfile.Add(szFolderPath);
+
+				SearchNaverWhaleProfile(szFolderPath, nDepth + 1);
+			}
+		}
+	}
+	finder.Close();
+}
+
+void CFindBrowserExtensionsDlg::AddNaverWhaleProfile()
+{
+	CString strFodler1, strFodler2;
+	for (int i = 0; i < ArNaverWhaleExtensionProfile.GetSize(); i++)
+	{
+		strFodler1.Format(_T("%s\\Extensions"), ArNaverWhaleExtensionProfile.GetAt(i));
+		strFodler2.Format(_T("%s\\Sync Extension Settings"), ArNaverWhaleExtensionProfile.GetAt(i));
+
+		//파일 경로를 찾았으므로 경로 업데이트
+		SetDlgItemText(IDC_STATIC_NAVERWHALE1, _T("naverwhale path1 - ") + strFodler1);
+		SetDlgItemText(IDC_STATIC_NAVERWHALE2, _T("naverwhale path2 - ") + strFodler2);
+
+		SearchPathNaverWhaleAll(strFodler1);
+		SearchPathNaverWhaleAll(strFodler2);
+	}
+}
+
+void CFindBrowserExtensionsDlg::SearchPathNaverWhaleAll(CString strDirectory)
+{
+	CString strFilter = strDirectory + _T("\\*.*");
+
+	double start = 0;
+	double stop = 0;
+
+	CFileFind finder;
+	BOOL bSearch = finder.FindFile(strFilter, 0);
+
+	while (bSearch)
+	{
+		bSearch = finder.FindNextFile();
+
+		if (finder.IsDots())
+			continue;
+
+		if (finder.IsDirectory())
+		{
+			CString strItem = GetFolderName(finder.GetFilePath());
+
+			AddExtensionInfo(strItem, _T("NaverWhale"), finder.GetFilePath());
+		}
+	}
+	finder.Close();
+}
+
 void CFindBrowserExtensionsDlg::AddExtensionInfo(CString strItem, CString strDisplayName, CString strItemFullPath)
 {
 	ExtensionInfo info;
@@ -437,4 +529,6 @@ void CFindBrowserExtensionsDlg::ClearExtensionInfo()
 	m_Extensions.clear();
 
 	ArChromeExtensionProfile.RemoveAll();
+
+	ArNaverWhaleExtensionProfile.RemoveAll();
 }
