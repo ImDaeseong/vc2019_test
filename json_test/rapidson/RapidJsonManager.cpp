@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "RapidJsonManager.h"
 
+#pragma warning(disable : 4984)
+
 CRapidJsonManager::CRapidJsonManager()
 {
     m_document.SetObject();
@@ -56,39 +58,6 @@ bool CRapidJsonManager::GetValueAsBool(const CString& key) const
         return m_document[utf8Key.c_str()].GetBool();
     }
     return false;
-}
-
-bool CRapidJsonManager::SetValueAsCString(const CString& key, const CString& value)
-{
-    std::string utf8Key = CStringToUtf8(key);
-    std::string utf8Value = CStringToUtf8(value);
-    m_document.RemoveMember(utf8Key.c_str());
-    m_document.AddMember(rapidjson::Value(utf8Key.c_str(), m_document.GetAllocator()).Move(), rapidjson::Value(utf8Value.c_str(), m_document.GetAllocator()).Move(), m_document.GetAllocator());
-    return true;
-}
-
-bool CRapidJsonManager::SetValue(const CString& key, int value)
-{
-    std::string utf8Key = CStringToUtf8(key);
-    m_document.RemoveMember(utf8Key.c_str());
-    m_document.AddMember(rapidjson::Value(utf8Key.c_str(), m_document.GetAllocator()).Move(), value, m_document.GetAllocator());
-    return true;
-}
-
-bool CRapidJsonManager::SetValue(const CString& key, double value)
-{
-    std::string utf8Key = CStringToUtf8(key);
-    m_document.RemoveMember(utf8Key.c_str());
-    m_document.AddMember(rapidjson::Value(utf8Key.c_str(), m_document.GetAllocator()).Move(), value, m_document.GetAllocator());
-    return true;
-}
-
-bool CRapidJsonManager::SetValue(const CString& key, bool value)
-{
-    std::string utf8Key = CStringToUtf8(key);
-    m_document.RemoveMember(utf8Key.c_str());
-    m_document.AddMember(rapidjson::Value(utf8Key.c_str(), m_document.GetAllocator()).Move(), value, m_document.GetAllocator());
-    return true;
 }
 
 bool CRapidJsonManager::SetJsonArray(const CString& key, const std::vector<rapidjson::Value*>& array)

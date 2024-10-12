@@ -26,14 +26,13 @@ END_MESSAGE_MAP()
 
 
 void addGameToList(std::vector<nlohmann::json>& gameList, int no, bool bFree, const CString& gameName, const CString& exeName) {
-    
     auto gameObject = CJsonManager::CreateJsonObject();
-    
+
     CJsonManager::AddToJsonObject(gameObject, _T("NO"), no);
     CJsonManager::AddToJsonObject(gameObject, _T("FREE"), bFree);
     CJsonManager::AddToJsonObject(gameObject, _T("GAME"), gameName);
     CJsonManager::AddToJsonObject(gameObject, _T("EXE"), exeName);
-    
+
     gameList.push_back(gameObject);
 }
 
@@ -41,9 +40,9 @@ void createJson()
 {
     CJsonManager man;
 
-    //기본정보
-    man.SetValueAsCString(_T("GameType"), _T("RPG"));
-    man.SetValueAsCString(_T("GameCompany"), _T("Blizzard"));
+    // 기본정보
+    man.SetValue(_T("GameType"), _T("RPG"));
+    man.SetValue(_T("GameCompany"), _T("Blizzard"));
     man.SetValue(_T("GameValue"), 54000);
     man.SetValue(_T("GameFree"), false);
 
@@ -55,13 +54,11 @@ void createJson()
     addGameToList(newGameList, 4, false, _T("디아블로4"), _T("Diablo IV.exe"));
     man.SetJsonArray(_T("NewGameList"), newGameList);
 
-
-    //기본정보 가져오기
+    // 기본정보 가져오기
     CString sNewGameType = man.GetValueAsCString(_T("GameType"));
     CString sNewGameCompany = man.GetValueAsCString(_T("GameCompany"));
     int nGameValue = man.GetValueAsInt(_T("GameValue"));
     bool bGameFree = man.GetValueAsBool(_T("GameFree"));
-
 
     // 게임 리스트 가져오기
     std::vector<nlohmann::json> retrievedGameList = man.GetJsonArray(_T("NewGameList"));
@@ -69,18 +66,18 @@ void createJson()
     // 1번째 데이터
     if (!retrievedGameList.empty()) {
         const nlohmann::json& firstGame = retrievedGameList[0];
-        int nNo = firstGame.at("NO").get<int>();
-        bool bFree = firstGame.at("FREE").get<bool>();
-        CString sGAME = CJsonManager::ConvertUtf8ToCString(firstGame.at("GAME").get<std::string>());
-        CString sEXE = CJsonManager::ConvertUtf8ToCString(firstGame.at("EXE").get<std::string>());
+        int nNo = firstGame["NO"].get<int>();
+        bool bFree = firstGame["FREE"].get<bool>();
+        CString sGAME = CJsonManager::ConvertUtf8ToCString(firstGame["GAME"].get<std::string>());
+        CString sEXE = CJsonManager::ConvertUtf8ToCString(firstGame["EXE"].get<std::string>());
     }
 
     // 전체 리스트
     for (const auto& game : retrievedGameList) {
-        int nNo = game.at("NO").get<int>();
-        bool bFree = game.at("FREE").get<bool>();
-        CString sGAME = CJsonManager::ConvertUtf8ToCString(game.at("GAME").get<std::string>());
-        CString sEXE = CJsonManager::ConvertUtf8ToCString(game.at("EXE").get<std::string>());
+        int nNo = game["NO"].get<int>();
+        bool bFree = game["FREE"].get<bool>();
+        CString sGAME = CJsonManager::ConvertUtf8ToCString(game["GAME"].get<std::string>());
+        CString sEXE = CJsonManager::ConvertUtf8ToCString(game["EXE"].get<std::string>());
     }
 
     CString sResult = man.GetJsonString();

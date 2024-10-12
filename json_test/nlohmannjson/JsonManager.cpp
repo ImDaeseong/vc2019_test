@@ -13,7 +13,8 @@ CJsonManager::~CJsonManager()
 
 bool CJsonManager::LoadFromString(const CString& jsonString)
 {
-    try {
+    try 
+    {
         m_json = nlohmann::json::parse(CStringToUtf8(jsonString));
         return true;
     }
@@ -64,33 +65,10 @@ bool CJsonManager::GetValueAsBool(const CString& key) const
     return false;
 }
 
-bool CJsonManager::SetValueAsCString(const CString& key, const CString& value)
-{
-    m_json[CStringToUtf8(key)] = CStringToUtf8(value);
-    return true;
-}
-
-bool CJsonManager::SetValue(const CString& key, int value)
-{
-    m_json[CStringToUtf8(key)] = value;
-    return true;
-}
-
-bool CJsonManager::SetValue(const CString& key, double value)
-{
-    m_json[CStringToUtf8(key)] = value;
-    return true;
-}
-
-bool CJsonManager::SetValue(const CString& key, bool value)
-{
-    m_json[CStringToUtf8(key)] = value;
-    return true;
-}
-
 bool CJsonManager::SetJsonArray(const CString& key, const std::vector<nlohmann::json>& array)
 {
-    try {
+    try 
+    {
         nlohmann::json utf8Array;
         for (const auto& item : array) {
             utf8Array.push_back(item);
@@ -98,7 +76,8 @@ bool CJsonManager::SetJsonArray(const CString& key, const std::vector<nlohmann::
         m_json[CStringToUtf8(key)] = utf8Array;
         return true;
     }
-    catch (const std::exception& e) {
+    catch (const std::exception& e) 
+    {
         CString sErr = _T("SetJsonArray error: ") + Utf8ToCString(e.what());
         return false;
     }
@@ -118,7 +97,7 @@ std::vector<nlohmann::json> CJsonManager::GetJsonArray(const CString& key) const
 
 CString CJsonManager::GetJsonString() const
 {
-    try 
+    try
     {
         return Utf8ToCString(m_json.dump(4));
     }
@@ -132,26 +111,6 @@ CString CJsonManager::GetJsonString() const
 nlohmann::json CJsonManager::CreateJsonObject()
 {
     return nlohmann::json::object();
-}
-
-void CJsonManager::AddToJsonObject(nlohmann::json& obj, const CString& key, const CString& value)
-{
-    obj[CStringToUtf8(key)] = CStringToUtf8(value);
-}
-
-void CJsonManager::AddToJsonObject(nlohmann::json& obj, const CString& key, int value)
-{
-    obj[CStringToUtf8(key)] = value;
-}
-
-void CJsonManager::AddToJsonObject(nlohmann::json& obj, const CString& key, double value)
-{
-    obj[CStringToUtf8(key)] = value;
-}
-
-void CJsonManager::AddToJsonObject(nlohmann::json& obj, const CString& key, bool value)
-{
-    obj[CStringToUtf8(key)] = value;
 }
 
 std::string CJsonManager::CStringToUtf8(const CString& str)

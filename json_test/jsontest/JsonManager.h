@@ -19,19 +19,58 @@ public:
     double GetValueAsDouble(const CString& key) const;
     bool GetValueAsBool(const CString& key) const;
 
-    bool SetValueAsCString(const CString& key, const CString& value);
-    bool SetValue(const CString& key, int value);
-    bool SetValue(const CString& key, double value);
-    bool SetValue(const CString& key, bool value);
+    template<typename T>
+    bool SetValue(const CString& key, const T& value)
+    {
+        if (key.IsEmpty())
+        {
+            return false;
+        }
+
+        if constexpr (std::is_convertible_v<T, CString>)
+        {
+            CString cstrValue = value;  // 명시적 변환
+            m_json[CStringToUtf8(key)] = CStringToUtf8(cstrValue);
+        }
+        else if constexpr (std::is_arithmetic_v<T> || std::is_same_v<T, bool>)
+        {
+            m_json[CStringToUtf8(key)] = value;
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     bool SetJsonArray(const CString& key, const std::vector<Json::Value>& array);
     std::vector<Json::Value> GetJsonArray(const CString& key) const;
 
     static Json::Value CreateJsonObject();
-    static void AddToJsonObject(Json::Value& obj, const CString& key, const CString& value);
-    static void AddToJsonObject(Json::Value& obj, const CString& key, int value);
-    static void AddToJsonObject(Json::Value& obj, const CString& key, double value);
-    static void AddToJsonObject(Json::Value& obj, const CString& key, bool value);
+   
+    template<typename T>
+    static void AddToJsonObject(Json::Value& obj, const CString& key, const T& value)
+    {
+        if (key.IsEmpty())
+        {
+            return;
+        }
+
+        if constexpr (std::is_convertible_v<T, CString>)
+        {
+            CString cstrValue = value; 
+            obj[CStringToUtf8(key)] = CStringToUtf8(cstrValue);
+        }
+        else if constexpr (std::is_arithmetic_v<T> || std::is_same_v<T, bool>)
+        {
+            obj[CStringToUtf8(key)] = value;
+        }
+        else
+        {
+            static_assert(always_false<T>, "Unsupported type for AddToJsonObject");
+        }
+    }
 
     static CString ConvertUtf8ToCString(const std::string& str);
 
@@ -42,4 +81,7 @@ private:
 
     static std::string CStringToUtf8(const CString& str);
     static CString Utf8ToCString(const std::string& str);
+
+    template<typename T>
+    static constexpr bool always_false = false;
 };

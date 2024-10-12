@@ -41,8 +41,8 @@ void createJson()
     CJsonManager man;
 
     // 기본정보 설정
-    man.SetValueAsCString(_T("GameType"), _T("RPG"));
-    man.SetValueAsCString(_T("GameCompany"), _T("Blizzard"));
+    man.SetValue(_T("GameType"), _T("RPG"));
+    man.SetValue(_T("GameCompany"), _T("Blizzard"));
     man.SetValue(_T("GameValue"), 54000);
     man.SetValue(_T("GameFree"), false);
 

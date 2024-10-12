@@ -83,46 +83,6 @@ bool CJsonManager::GetValueAsBool(const CString& key) const
     return false;
 }
 
-bool CJsonManager::SetValueAsCString(const CString& key, const CString& value) 
-{
-    if (key.IsEmpty() || value.IsEmpty()) {
-        return false;
-    }
-
-    m_json[CStringToUtf8(key)] = CStringToUtf8(value);
-    return true;
-}
-
-bool CJsonManager::SetValue(const CString& key, int value)
-{
-    if (key.IsEmpty()) {
-        return false;
-    }
-
-    m_json[CStringToUtf8(key)] = value;
-    return true;
-}
-
-bool CJsonManager::SetValue(const CString& key, double value) 
-{
-    if (key.IsEmpty()) {
-        return false;
-    }
-
-    m_json[CStringToUtf8(key)] = value;
-    return true;
-}
-
-bool CJsonManager::SetValue(const CString& key, bool value) 
-{
-    if (key.IsEmpty()) {
-        return false;
-    }
-
-    m_json[CStringToUtf8(key)] = value;
-    return true;
-}
-
 bool CJsonManager::SetJsonArray(const CString& key, const std::vector<Json::Value>& array)
 {
     if (key.IsEmpty()) {
@@ -141,7 +101,6 @@ std::vector<Json::Value> CJsonManager::GetJsonArray(const CString& key) const
 {
     std::vector<Json::Value> result;
     if (key.IsEmpty()) {
-        // 유효하지 않은 키
         return result; 
     }
 
@@ -163,42 +122,6 @@ CString CJsonManager::GetJsonString() const
 Json::Value CJsonManager::CreateJsonObject() 
 {
     return Json::Value(Json::objectValue);
-}
-
-void CJsonManager::AddToJsonObject(Json::Value& obj, const CString& key, const CString& value) 
-{
-    if (key.IsEmpty() || value.IsEmpty()) {
-        return;
-    }
-
-    obj[CStringToUtf8(key)] = CStringToUtf8(value);
-}
-
-void CJsonManager::AddToJsonObject(Json::Value& obj, const CString& key, int value) 
-{
-    if (key.IsEmpty()) {
-        return; 
-    }
-
-    obj[CStringToUtf8(key)] = value;
-}
-
-void CJsonManager::AddToJsonObject(Json::Value& obj, const CString& key, double value) 
-{
-    if (key.IsEmpty()) {
-        return;
-    }
-
-    obj[CStringToUtf8(key)] = value;
-}
-
-void CJsonManager::AddToJsonObject(Json::Value& obj, const CString& key, bool value) 
-{
-    if (key.IsEmpty()) {
-        return;
-    }
-
-    obj[CStringToUtf8(key)] = value;
 }
 
 std::string CJsonManager::CStringToUtf8(const CString& str) 
