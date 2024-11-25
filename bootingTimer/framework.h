@@ -30,6 +30,7 @@
 
 
 #include "BootTimerManager.h"
+#include "RegInfo.h"
 
 
 #ifdef _UNICODE

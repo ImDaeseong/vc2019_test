@@ -27,8 +27,13 @@ BOOL CbootingTimerDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	BootTimerManager obj1;
-	CString strResult = obj1.GetBootTime();
-	AfxMessageBox(strResult);
+	CString strResult1 = obj1.GetBootTime();
+	//AfxMessageBox(strResult1);
+
+	//정확하지는 않음
+	RegInfo reg;
+	CString strResult2 = reg.getBootingCount();
+	//AfxMessageBox(strResult2);
 
 	return TRUE; 
 }
