@@ -23,6 +23,7 @@ BEGIN_MESSAGE_MAP(CstringuiltestDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CstringuiltestDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CstringuiltestDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CstringuiltestDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CstringuiltestDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 BOOL CstringuiltestDlg::OnInitDialog()
@@ -248,4 +249,65 @@ void CstringuiltestDlg::OnBnClickedButton4()
 
 	TCHAR* a19 = str19.GetBuffer(str19.GetLength());
 	str19.ReleaseBuffer();
+}
+
+//std::basic_string<TCHAR>
+void CstringuiltestDlg::OnBnClickedButton5()
+{
+	int nCount = 4;
+	tstring _str = _T("aBcdeFghiJklmn1234oPqrst");
+
+	tstring a1 = tstringutil::Left(_str, nCount);
+	tstring a2 = tstringutil::Right(_str, nCount);
+	tstring a3 = tstringutil::Mid(_str, 0, nCount);
+	tstring a4 = tstringutil::MakeLower(_str);
+	tstring a5 = tstringutil::MakeUpper(_str);
+	size_t a6 = tstringutil::Find(_str, _T("1234"), 0);
+	size_t a7 = tstringutil::Find(_str, _T('3'), 0);
+
+	CString stMsg;
+	stMsg.Format(_T("a6:%d a7:%d\n"), a6, a7);
+	OutputDebugString(stMsg);
+
+	size_t a8 = tstringutil::ReserveFind(_str, _T("1234"));
+	size_t a9 = tstringutil::ReserveFind(_str, _T('3'));
+
+	stMsg.Format(_T("a8:%d a9:%d\n"), a8, a9);
+	OutputDebugString(stMsg);
+
+	tstring a10 = tstringutil::GetFilePath(_T("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"));
+	tstring a11 = tstringutil::GetFileName(_T("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"));
+	tstring a12 = tstringutil::RemoveExt(a11);
+	tstring a13 = tstringutil::GetFileExt(_T("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"));
+	tstring a14 = tstringutil::GetFindStr(_T("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"), _T("Chrome"), _T("Application"));
+
+	stMsg = a14.c_str();
+	OutputDebugString(stMsg);
+
+	std::vector<tstring> _Vec;
+	tstring _strPath = _T("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+	tstring _delimit = _T("\\");
+
+	if (tstringutil::Split(_strPath, _delimit, _Vec) > 0)
+	{
+		for (int i = 0; i < _Vec.size(); i++)
+		{
+			// 정수를 문자열로 변환하는 방법
+			TCHAR szBuffer[32] = { 0 };
+			_stprintf_s(szBuffer, _T("%d"), i);
+
+			tstring str = szBuffer;
+			str += _T(" 데이터 ");
+			str += _Vec[i];
+
+			stMsg = str.c_str();
+			OutputDebugString(stMsg);
+		}
+	}
+
+	tstring a15 = tstringutil::TrimLeft(_T("  C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"));
+	tstring a16 = tstringutil::TrimRight(_T("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe   "));
+	tstring a17 = tstringutil::Trim(_T("  C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe   "));
+	tstring a18 = tstringutil::Reserve(a17);
+	tstring a19 = tstringutil::Replace(a17, _T("chrome.exe"), _T("msedge.exe"));
 }

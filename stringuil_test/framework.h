@@ -28,12 +28,18 @@
 
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
+#include <string>
+#include <algorithm>
+#include <codecvt>
+#include <vector>
+#include <tchar.h>
+using namespace std;
 
-
-
-
-
-
+#include "stringutil.h"
+#include "wstringutil.h"
+#include "wcharutil.h"
+#include "TCHARutil.h"
+#include "tstringutil.h"
 
 
 #ifdef _UNICODE

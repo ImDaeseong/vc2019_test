@@ -1,6 +1,202 @@
 #include "pch.h"
 #include "stringutil.h"
 
+std::string stringutil::Mid(const std::string& str, size_t off, size_t count)
+{
+    return str.substr(off, count);
+}
+
+std::string stringutil::Left(const std::string& str, size_t count)
+{
+    return str.substr(0, count);
+}
+
+std::string stringutil::Right(const std::string& str, size_t count)
+{
+    if (count > str.size()) {
+        count = str.size(); // 문자열 길이보다 큰 값이 들어올 경우 처리
+    }
+    return str.substr(str.size() - count, count);
+}
+
+std::string stringutil::MakeLower(const std::string& str)
+{
+    std::string result;
+    result.reserve(str.size()); // 미리 메모리 할당으로 성능 향상
+    std::transform(str.begin(), str.end(), std::back_inserter(result), ::tolower);
+    return result;
+}
+
+std::string stringutil::MakeUpper(const std::string& str)
+{
+    std::string result;
+    result.reserve(str.size()); // 미리 메모리 할당으로 성능 향상
+    std::transform(str.begin(), str.end(), std::back_inserter(result), ::toupper);
+    return result;
+}
+
+size_t stringutil::Find(const std::string& str, const std::string& strsub, size_t off)
+{
+    return str.find(strsub, off);
+}
+
+size_t stringutil::Find(const std::string& str, char ch, size_t off)
+{
+    return str.find(ch, off);
+}
+
+size_t stringutil::ReserveFind(const std::string& str, const std::string& strsub)
+{
+    return str.rfind(strsub);
+}
+
+size_t stringutil::ReserveFind(const std::string& str, char ch)
+{
+    return str.rfind(ch);
+}
+
+size_t stringutil::Split(const std::string& str, const std::string& delimiter, std::vector<std::string>& result)
+{
+    result.clear();
+
+    if (str.empty()) {
+        return 0;
+    }
+
+    if (delimiter.empty()) {
+        result.push_back(str);
+        return 1;
+    }
+
+    size_t pos = 0;
+    size_t found;
+    std::string temp = str; // 원본 문자열 보존
+
+    while ((found = temp.find(delimiter, pos)) != std::string::npos) {
+        result.push_back(temp.substr(pos, found - pos));
+        pos = found + delimiter.length();
+    }
+
+    // 마지막 조각 추가
+    if (pos <= temp.length()) {
+        result.push_back(temp.substr(pos));
+    }
+
+    return result.size();
+}
+
+std::string stringutil::Trim(const std::string& str)
+{
+    return TrimRight(TrimLeft(str));
+}
+
+std::string stringutil::TrimLeft(const std::string& str)
+{
+    std::string result = str;
+    size_t pos = result.find_first_not_of(" \t\r\n");
+
+    if (pos == std::string::npos) {
+        return ""; // 모두 공백인 경우
+    }
+
+    result.erase(0, pos);
+    return result;
+}
+
+std::string stringutil::TrimRight(const std::string& str)
+{
+    std::string result = str;
+    size_t pos = result.find_last_not_of(" \t\r\n");
+
+    if (pos == std::string::npos) {
+        return ""; // 모두 공백인 경우
+    }
+
+    result.erase(pos + 1);
+    return result;
+}
+
+std::string stringutil::Reserve(const std::string& str)
+{
+    std::string result = str;
+    std::reverse(result.begin(), result.end()); // 표준 알고리즘 사용
+    return result;
+}
+
+std::string stringutil::Replace(const std::string& str, const std::string& search, const std::string& replace)
+{
+    if (search.empty()) {
+        return str; // 검색 문자열이 비어있으면 원본 반환
+    }
+
+    std::string result = str;
+    size_t pos = 0;
+
+    while ((pos = result.find(search, pos)) != std::string::npos) {
+        result.replace(pos, search.length(), replace);
+        pos += replace.length();
+    }
+
+    return result;
+}
+
+std::string stringutil::GetFilePath(const std::string& str)
+{
+    size_t pos = str.find_last_of("\\/");
+    if (pos != std::string::npos) {
+        return str.substr(0, pos);
+    }
+    return "";
+}
+
+std::string stringutil::GetFileName(const std::string& str)
+{
+    size_t pos = str.find_last_of("\\/");
+    if (pos != std::string::npos) {
+        return str.substr(pos + 1);
+    }
+    return str;
+}
+
+std::string stringutil::RemoveExt(const std::string& str)
+{
+    size_t pos = str.find_last_of(".");
+    if (pos != std::string::npos) {
+        return str.substr(0, pos);
+    }
+    return str;
+}
+
+std::string stringutil::GetFileExt(const std::string& str)
+{
+    size_t pos = str.find_last_of(".");
+    if (pos != std::string::npos) {
+        return str.substr(pos + 1);
+    }
+    return "";
+}
+
+std::string stringutil::GetFindStr(const std::string& str, const std::string& left, const std::string& right)
+{
+    size_t leftPos = str.find(left);
+    if (leftPos == std::string::npos) {
+        return "";
+    }
+
+    leftPos += left.length(); // left 문자열 다음부터 시작
+    size_t rightPos = str.find(right, leftPos);
+
+    if (rightPos == std::string::npos) {
+        return "";
+    }
+
+    return str.substr(leftPos, rightPos - leftPos);
+}
+
+/*
+#include "pch.h"
+#include "stringutil.h"
+
 std::string stringutil::Mid(const std::string& _Str, size_t _Off, size_t _Count)
 {
 	return _Str.substr(_Off, _Count);
@@ -171,3 +367,4 @@ std::string stringutil::GetFindStr(const std::string& _Str, const std::string& _
 
 	return _Str;
 }
+*/

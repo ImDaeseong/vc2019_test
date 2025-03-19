@@ -44,14 +44,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -191,6 +191,7 @@
     <ClInclude Include="stringutil.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TCHARutil.h" />
+    <ClInclude Include="tstringutil.h" />
     <ClInclude Include="wcharutil.h" />
     <ClInclude Include="wstringutil.h" />
   </ItemGroup>
@@ -205,6 +206,7 @@
     <ClCompile Include="stringuil_testDlg.cpp" />
     <ClCompile Include="stringutil.cpp" />
     <ClCompile Include="TCHARutil.cpp" />
+    <ClCompile Include="tstringutil.cpp" />
     <ClCompile Include="wcharutil.cpp" />
     <ClCompile Include="wstringutil.cpp" />
   </ItemGroup>
