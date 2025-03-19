@@ -1,6 +1,202 @@
 #include "pch.h"
 #include "wstringutil.h"
 
+std::wstring wstringutil::Mid(const std::wstring& str, size_t off, size_t count)
+{
+    return str.substr(off, count);
+}
+
+std::wstring wstringutil::Left(const std::wstring& str, size_t count)
+{
+    return str.substr(0, count);
+}
+
+std::wstring wstringutil::Right(const std::wstring& str, size_t count)
+{
+    if (count > str.size()) {
+        count = str.size(); // 문자열 길이보다 큰 값이 들어올 경우 처리
+    }
+    return str.substr(str.size() - count, count);
+}
+
+std::wstring wstringutil::MakeLower(const std::wstring& str)
+{
+    std::wstring result;
+    result.reserve(str.size()); // 미리 메모리 할당으로 성능 향상
+    std::transform(str.begin(), str.end(), std::back_inserter(result), ::towlower);
+    return result;
+}
+
+std::wstring wstringutil::MakeUpper(const std::wstring& str)
+{
+    std::wstring result;
+    result.reserve(str.size()); // 미리 메모리 할당으로 성능 향상
+    std::transform(str.begin(), str.end(), std::back_inserter(result), ::towupper);
+    return result;
+}
+
+size_t wstringutil::Find(const std::wstring& str, const std::wstring& strsub, size_t off)
+{
+    return str.find(strsub, off);
+}
+
+size_t wstringutil::Find(const std::wstring& str, wchar_t ch, size_t off)
+{
+    return str.find(ch, off);
+}
+
+size_t wstringutil::ReserveFind(const std::wstring& str, const std::wstring& strsub)
+{
+    return str.rfind(strsub);
+}
+
+size_t wstringutil::ReserveFind(const std::wstring& str, wchar_t ch)
+{
+    return str.rfind(ch);
+}
+
+size_t wstringutil::Split(const std::wstring& str, const std::wstring& delimiter, std::vector<std::wstring>& result)
+{
+    result.clear();
+
+    if (str.empty()) {
+        return 0;
+    }
+
+    if (delimiter.empty()) {
+        result.push_back(str);
+        return 1;
+    }
+
+    size_t pos = 0;
+    size_t found;
+    std::wstring temp = str; // 원본 문자열 보존
+
+    while ((found = temp.find(delimiter, pos)) != std::wstring::npos) {
+        result.push_back(temp.substr(pos, found - pos));
+        pos = found + delimiter.length();
+    }
+
+    // 마지막 조각 추가
+    if (pos <= temp.length()) {
+        result.push_back(temp.substr(pos));
+    }
+
+    return result.size();
+}
+
+std::wstring wstringutil::Trim(const std::wstring& str)
+{
+    return TrimRight(TrimLeft(str));
+}
+
+std::wstring wstringutil::TrimLeft(const std::wstring& str)
+{
+    std::wstring result = str;
+    size_t pos = result.find_first_not_of(L" \t\r\n");
+
+    if (pos == std::wstring::npos) {
+        return L""; // 모두 공백인 경우
+    }
+
+    result.erase(0, pos);
+    return result;
+}
+
+std::wstring wstringutil::TrimRight(const std::wstring& str)
+{
+    std::wstring result = str;
+    size_t pos = result.find_last_not_of(L" \t\r\n");
+
+    if (pos == std::wstring::npos) {
+        return L""; // 모두 공백인 경우
+    }
+
+    result.erase(pos + 1);
+    return result;
+}
+
+std::wstring wstringutil::Reserve(const std::wstring& str)
+{
+    std::wstring result = str;
+    std::reverse(result.begin(), result.end()); // 표준 알고리즘 사용
+    return result;
+}
+
+std::wstring wstringutil::Replace(const std::wstring& str, const std::wstring& search, const std::wstring& replace)
+{
+    if (search.empty()) {
+        return str; // 검색 문자열이 비어있으면 원본 반환
+    }
+
+    std::wstring result = str;
+    size_t pos = 0;
+
+    while ((pos = result.find(search, pos)) != std::wstring::npos) {
+        result.replace(pos, search.length(), replace);
+        pos += replace.length();
+    }
+
+    return result;
+}
+
+std::wstring wstringutil::GetFilePath(const std::wstring& str)
+{
+    size_t pos = str.find_last_of(L"\\/");
+    if (pos != std::wstring::npos) {
+        return str.substr(0, pos);
+    }
+    return L"";
+}
+
+std::wstring wstringutil::GetFileName(const std::wstring& str)
+{
+    size_t pos = str.find_last_of(L"\\/");
+    if (pos != std::wstring::npos) {
+        return str.substr(pos + 1);
+    }
+    return str;
+}
+
+std::wstring wstringutil::RemoveExt(const std::wstring& str)
+{
+    size_t pos = str.find_last_of(L".");
+    if (pos != std::wstring::npos) {
+        return str.substr(0, pos);
+    }
+    return str;
+}
+
+std::wstring wstringutil::GetFileExt(const std::wstring& str)
+{
+    size_t pos = str.find_last_of(L".");
+    if (pos != std::wstring::npos) {
+        return str.substr(pos + 1);
+    }
+    return L"";
+}
+
+std::wstring wstringutil::GetFindStr(const std::wstring& str, const std::wstring& left, const std::wstring& right)
+{
+    size_t leftPos = str.find(left);
+    if (leftPos == std::wstring::npos) {
+        return L"";
+    }
+
+    leftPos += left.length(); // left 문자열 다음부터 시작
+    size_t rightPos = str.find(right, leftPos);
+
+    if (rightPos == std::wstring::npos) {
+        return L"";
+    }
+
+    return str.substr(leftPos, rightPos - leftPos);
+}
+
+/*
+#include "pch.h"
+#include "wstringutil.h"
+
 std::wstring wstringutil::Mid(const std::wstring& _Str, size_t _Off, size_t _Count)
 {
 	return _Str.substr(_Off, _Count);
@@ -136,13 +332,11 @@ std::wstring wstringutil::GetFilePath(const std::wstring& _Str)
 		return Left(_Str, nPos);
 	return _Str;
 
-	/*
-	size_t nPos = _Str.rfind(L"\\");
-	if (nPos > 0)
-		return Left(_Str, nPos);
-
-	return _Str;
-	*/
+	//size_t nPos = _Str.rfind(L"\\");
+	//if (nPos > 0)
+	//	return Left(_Str, nPos);
+	//
+	//return _Str;
 }
 
 std::wstring wstringutil::GetFileName(const std::wstring& _Str)
@@ -153,13 +347,11 @@ std::wstring wstringutil::GetFileName(const std::wstring& _Str)
 
 	return _Str;
 
-	/*
-	size_t nPos = _Str.rfind(L"\\");
-	if (nPos > 0)
-		return _Str.substr(nPos + 1);
-
-	return _Str;
-	*/
+	//size_t nPos = _Str.rfind(L"\\");
+	//if (nPos > 0)
+	//	return _Str.substr(nPos + 1);
+	//
+	//return _Str;
 }
 
 std::wstring wstringutil::RemoveExt(const std::wstring& _Str)
@@ -174,13 +366,11 @@ std::wstring wstringutil::GetFileExt(const std::wstring& _Str)
 		return _Str.substr(nPos + 1);
 	return _Str;
 
-	/*
-	size_t nPos = _Str.rfind(L'.');
-	if (nPos > 0)
-		return _Str.substr(nPos + 1);
-
-	return _Str;
-	*/
+	//size_t nPos = _Str.rfind(L'.');
+	//if (nPos > 0)
+	//	return _Str.substr(nPos + 1);
+	//
+	//return _Str;
 }
 
 std::wstring wstringutil::GetFindStr(const std::wstring& _Str, const std::wstring& _left, const std::wstring& _right)
@@ -193,3 +383,4 @@ std::wstring wstringutil::GetFindStr(const std::wstring& _Str, const std::wstrin
 
 	return _Str;
 }
+*/

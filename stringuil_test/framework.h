@@ -33,6 +33,9 @@
 #include <codecvt>
 #include <vector>
 #include <tchar.h>
+#include <functional>
+#include <locale>
+
 using namespace std;
 
 #include "stringutil.h"
