@@ -1,0 +1,32 @@
+﻿#pragma once
+#include "EdgeWebBrowser.h"
+
+class CMFCApplication1WebView2Dlg : public CDialogEx
+{
+public:
+    CMFCApplication1WebView2Dlg(CWnd* pParent = nullptr);
+
+#ifdef AFX_DESIGN_TIME
+    enum { IDD = IDD_MFCAPPLICATION1WEBVIEW2_DIALOG };
+#endif
+
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
+    afx_msg void OnPaint();
+    afx_msg void OnDestroy();
+    afx_msg LRESULT OnMessage1(WPARAM, LPARAM);
+    afx_msg LRESULT OnMessage2(WPARAM, LPARAM);
+    afx_msg void OnBnClickedButton1();
+    afx_msg void OnBnClickedButton2();
+    DECLARE_MESSAGE_MAP()
+
+private:
+    void setBrowserMode(BOOL bShow);
+    void destroyOverlay();
+    void destroyWebBrowser();
+
+
+    std::unique_ptr<CWebBrowser> m_pWebBrowser{};
+    COverlayWnd* m_overWnd;
+};
