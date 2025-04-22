@@ -20,6 +20,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 private:
+    BOOL IsTopmostWindow(HWND hCheckWnd);
     void setBrowserMode(BOOL bShow);
     BOOL m_bShow;
 

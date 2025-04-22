@@ -35,6 +35,7 @@ BOOL CMFCApplication1WebView2Dlg::OnInitDialog()
 	setBrowserMode(TRUE);
 
 	SetTimer(1, 5000, NULL);
+	SetTimer(2, 1000, NULL);
 
     return TRUE;
 }
@@ -57,12 +58,51 @@ void CMFCApplication1WebView2Dlg::OnDestroy()
 		delete m_overWnd;
 		m_overWnd = nullptr;
 	}
+
+	KillTimer(1);
+	KillTimer(2);
 }
 
 void CMFCApplication1WebView2Dlg::OnTimer(UINT_PTR nIDEvent)
 {
-	setBrowserMode(m_bShow);
-	m_bShow = !m_bShow;
+	if (nIDEvent == 1)
+	{
+		setBrowserMode(m_bShow);
+		m_bShow = !m_bShow;
+	}
+	else if (nIDEvent == 2)
+	{
+		if (m_overWnd)
+		{
+			if (IsTopmostWindow(m_overWnd->GetSafeHwnd()))
+			{
+				//다른 TOPMOST 윈도우가 존재
+				::SetWindowPos(m_overWnd->GetSafeHwnd(), HWND_TOPMOST, 0, 0, 0, 0,
+					SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+			}
+			else
+			{
+				//m_overWnd가 최상위 TOPMOST 윈도우
+			}
+		}
+	}
+}
+
+BOOL CMFCApplication1WebView2Dlg::IsTopmostWindow(HWND hCheckWnd)
+{
+	HWND hTopWnd = ::GetTopWindow(NULL);
+	while (hTopWnd)
+	{
+		if (hTopWnd == hCheckWnd)
+			return FALSE;
+
+		LONG_PTR exStyle = ::GetWindowLongPtr(hTopWnd, GWL_EXSTYLE);
+		if ((exStyle & WS_EX_TOPMOST) && ::IsWindowVisible(hTopWnd))
+			return TRUE;
+
+		hTopWnd = ::GetNextWindow(hTopWnd, GW_HWNDNEXT);
+	}
+	return FALSE;
 }
 
 void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
@@ -82,7 +122,7 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 		int nTop = rRect.top + 50;//(rRect.Height() - nHeight) / 2;
 		CRect rRc(nLeft, nTop, nLeft + nWidth, nTop + nHeight);
 
-		if (m_overWnd == NULL)
+		if (m_overWnd == nullptr)
 		{
 			//정적 변수로 한 번만 등록
 			static LPCTSTR s_overlayClass = AfxRegisterWndClass(0);
@@ -102,6 +142,12 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 		{
 			m_overWnd->MoveWindow(rRc);
 		}
+
+		/*
+		//FullScreen TOPMOST 원도우가 있는 경우 필요
+		::SetWindowPos(m_overWnd->GetSafeHwnd(), HWND_TOPMOST, 0, 0, 0, 0,
+			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+        */
 	}
 	else
 	{
