@@ -12,6 +12,7 @@ CMFCApplication1WebView2Dlg::CMFCApplication1WebView2Dlg(CWnd* pParent /*=nullpt
     : CDialogEx(IDD_MFCAPPLICATION1WEBVIEW2_DIALOG, pParent)
 {
 	m_overWnd = nullptr;
+	m_bShow = TRUE;
 }
 
 void CMFCApplication1WebView2Dlg::DoDataExchange(CDataExchange* pDX)
@@ -22,6 +23,7 @@ void CMFCApplication1WebView2Dlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMFCApplication1WebView2Dlg, CDialogEx)
     ON_WM_PAINT()
     ON_WM_DESTROY()
+	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCApplication1WebView2Dlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCApplication1WebView2Dlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
@@ -29,6 +31,8 @@ END_MESSAGE_MAP()
 BOOL CMFCApplication1WebView2Dlg::OnInitDialog()
 {
     CDialogEx::OnInitDialog();
+
+	SetTimer(1, 5000, NULL);
 
     return TRUE;
 }
@@ -51,6 +55,12 @@ void CMFCApplication1WebView2Dlg::OnDestroy()
 		delete m_overWnd;
 		m_overWnd = nullptr;
 	}
+}
+
+void CMFCApplication1WebView2Dlg::OnTimer(UINT_PTR nIDEvent)
+{
+	setBrowserMode(m_bShow);
+	m_bShow = !m_bShow;
 }
 
 void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
