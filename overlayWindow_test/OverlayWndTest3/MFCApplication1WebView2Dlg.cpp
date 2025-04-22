@@ -77,8 +77,6 @@ void CMFCApplication1WebView2Dlg::OnTimer(UINT_PTR nIDEvent)
 			if (IsTopmostWindow(m_overWnd->GetSafeHwnd()))
 			{
 				//다른 TOPMOST 윈도우가 존재
-				::SetWindowPos(m_overWnd->GetSafeHwnd(), HWND_TOPMOST, 0, 0, 0, 0,
-					SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
 			}
 			else
 			{
