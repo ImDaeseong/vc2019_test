@@ -32,6 +32,8 @@ BOOL CMFCApplication1WebView2Dlg::OnInitDialog()
 {
     CDialogEx::OnInitDialog();
 
+	setBrowserMode(TRUE);
+
 	SetTimer(1, 5000, NULL);
 
     return TRUE;
@@ -65,6 +67,8 @@ void CMFCApplication1WebView2Dlg::OnTimer(UINT_PTR nIDEvent)
 
 void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 {
+	m_bShow = bShow;
+
 	CRect rRect;
 	::SystemParametersInfo(SPI_GETWORKAREA, 0, &rRect, 0);
 
@@ -87,6 +91,7 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 			m_overWnd->CreateEx(WS_EX_NOACTIVATE | WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
 				s_overlayClass, NULL, WS_POPUP | WS_VISIBLE, rRc, NULL, 0);
 
+			m_overWnd->setDrawBg();
 			m_overWnd->setDrawText(_T("최상위 비활성화 원도우"));
 			m_overWnd->setDrawFont(_T("돋움"));
 			m_overWnd->setDrawColor(RGB(255, 255, 0));
