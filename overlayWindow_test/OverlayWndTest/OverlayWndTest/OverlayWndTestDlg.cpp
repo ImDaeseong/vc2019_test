@@ -77,18 +77,6 @@ void COverlayWndTestDlg::setBrowserMode(BOOL bShow)
 		}
 		else
 		{
-			//1번째 방법
-			m_overWnd = new COverlayWnd();
-			m_overWnd->CreateEx(WS_EX_NOACTIVATE | WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
-				NULL, _T("title"), WS_POPUP | WS_VISIBLE, rcWeb, this, 0);
-
-			m_overWnd->setDrawText(_T("1번째 텍스트"), _T("2번째 텍스트"), _T("3번째 텍스트"));
-			m_overWnd->setDrawFont(_T("맑은 고딕"), _T("돋움"), _T("돋움"));
-			m_overWnd->setDrawColor(RGB(255, 0, 0), RGB(0, 255, 0), RGB(255, 255, 0));
-			m_overWnd->UpdateDrawText();
-
-			//2번째 방법
-			/*
 			//정적 변수로 한 번만 등록
 			static LPCTSTR s_overlayClass = AfxRegisterWndClass(0);
 
@@ -101,8 +89,7 @@ void COverlayWndTestDlg::setBrowserMode(BOOL bShow)
 			//m_overWnd->setDrawColor(Color(255, 255, 0, 0), Color(255, 0, 255, 0), Color(255, 0, 0, 255));
 			m_overWnd->setDrawColor(RGB(255, 0, 0), RGB(0, 255, 0), RGB(255, 255, 0));
             m_overWnd->UpdateDrawText();
-			m_overWnd->MoveWindow(rcWeb);
-			*/
+			//m_overWnd->MoveWindow(rcWeb);
 		}
 	}
 	else

@@ -70,19 +70,6 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 
 		if (m_overWnd == nullptr)
 		{
-			//1번째 방법
-			m_overWnd = new COverlayWnd();
-			m_overWnd->CreateEx(WS_EX_NOACTIVATE | WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
-				NULL, _T("title"), WS_POPUP | WS_VISIBLE, rRc, NULL, 0);
-
-			m_overWnd->setDrawBg();
-			m_overWnd->setDrawText(_T("최상위 비활성화 원도우"));
-			m_overWnd->setDrawFont(_T("돋움"));
-			m_overWnd->setDrawColor(RGB(255, 255, 0));
-			m_overWnd->UpdateDrawText();
-
-			//2번째 방법
-			/*
 			//정적 변수로 한 번만 등록
 			static LPCTSTR s_overlayClass = AfxRegisterWndClass(0);
 
@@ -95,8 +82,7 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 			m_overWnd->setDrawFont(_T("돋움"));
 			m_overWnd->setDrawColor(RGB(255, 255, 0));
 			m_overWnd->UpdateDrawText();
-			m_overWnd->MoveWindow(rRc);
-			*/
+			//m_overWnd->MoveWindow(rRc);
 		}
 		else
 		{
@@ -141,25 +127,6 @@ void CMFCApplication1WebView2Dlg::setBrowserModeEx(BOOL bShow)
 
 		if (m_overWndEx == NULL)
 		{
-			//1번째 방법
-			m_overWndEx = new COverlayWndEx();
-			m_overWndEx->CreateEx(WS_EX_NOACTIVATE | WS_EX_TRANSPARENT  | WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
-				NULL, _T("title"), WS_POPUP | WS_VISIBLE, rRc, NULL, 0);
-
-			m_overWndEx->setDrawBg();
-			m_overWndEx->setDrawText(_T("최상위 비활성화 "), _T("최상위 비활성화"));
-			m_overWndEx->setDrawFont(_T("돋움"), _T("돋움"));
-			m_overWndEx->setDrawColor(RGB(255, 0, 0), RGB(0, 255, 0));
-			m_overWndEx->UpdateDrawText();
-
-			//윈도우 투명도 설정
-			m_overWndEx->SetLayeredWindowAttributes(RGB(0, 0, 0), 0, LWA_COLORKEY);
-
-			m_overWndEx->ShowWindow(SW_SHOWNORMAL);
-			m_overWndEx->UpdateWindow();
-
-			//2번째 방법
-			/*
 			//정적 변수로 한 번만 등록
 			static LPCTSTR s_overlayClass = AfxRegisterWndClass(0);
 
@@ -172,8 +139,7 @@ void CMFCApplication1WebView2Dlg::setBrowserModeEx(BOOL bShow)
 			m_overWndEx->setDrawFont(_T("돋움"), _T("돋움"));
 			m_overWndEx->setDrawColor(RGB(255, 0, 0), RGB(0, 255, 0));
 			m_overWndEx->UpdateDrawText();
-			m_overWndEx->MoveWindow(rRc);
-			*/
+			//m_overWndEx->MoveWindow(rRc);
 		}
 		else
 		{
