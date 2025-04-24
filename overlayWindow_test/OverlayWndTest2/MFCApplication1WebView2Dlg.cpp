@@ -98,6 +98,14 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 
 			if (m_overWnd == NULL)
 			{
+				//1번째 방법
+				m_overWnd = new COverlayWnd();
+				m_overWnd->CreateEx(WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
+					NULL, _T("title"), WS_POPUP | WS_VISIBLE, rcWeb, this, 0);
+				m_overWnd->UpdateDrawBackGround();
+
+				//2번째 방법
+				/*
 				//정적 변수로 한 번만 등록
 				static LPCTSTR s_overlayClass = AfxRegisterWndClass(0);
 
@@ -106,6 +114,7 @@ void CMFCApplication1WebView2Dlg::setBrowserMode(BOOL bShow)
 					s_overlayClass, NULL, WS_POPUP | WS_VISIBLE, rcWeb, this, 0);
 				m_overWnd->UpdateDrawBackGround();
 				m_overWnd->MoveWindow(rcWeb);
+				*/
 			}
 			else
 			{
