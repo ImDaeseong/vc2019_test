@@ -40,13 +40,13 @@ void CLoLtestDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
+	KillTimer(1);
+
 	if (m_lolManager)
 	{
 		delete m_lolManager;
 		m_lolManager = NULL;
 	}
-
-	KillTimer(1);
 }
 
 void CLoLtestDlg::OnPaint()
@@ -58,7 +58,7 @@ void CLoLtestDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == 1)
 	{
-		LoLDataInfo item = m_lolManager->GetGameDataInfo();
+		LoLGameInfo item = m_lolManager->GetDataInfo();
 		CString strGameId = item.strGameId;
 		CString strGameName = item.strGameName;
 		CString strGameTag = item.strGameTag;
