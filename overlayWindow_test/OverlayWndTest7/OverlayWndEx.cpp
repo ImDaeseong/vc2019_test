@@ -233,9 +233,13 @@ void COverlayWndEx::DrawText(Graphics& graphics,
     RectF drawRect(fCenterX, fCenterY, textRect.Width, textRect.Height);
 
     StringFormat format;
-    format.SetAlignment(StringAlignmentCenter);
-    format.SetLineAlignment(StringAlignmentNear);
+    //format.SetAlignment(StringAlignmentCenter);
+    //format.SetLineAlignment(StringAlignmentNear);
 
+    format.SetAlignment(StringAlignmentCenter);
+    format.SetLineAlignment(StringAlignmentCenter); //가운데 정렬
+    format.SetTrimming(StringTrimmingEllipsisCharacter); //말줄임 처리
+    format.SetFormatFlags(StringFormatFlagsNoWrap); //한 줄 제한
 
     Gdiplus::SolidBrush brush(textcolor);
     graphics.DrawString(strText, -1, &font, drawRect, &format, &brush);
