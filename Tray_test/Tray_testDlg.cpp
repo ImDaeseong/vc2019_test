@@ -42,7 +42,9 @@ void CTraytestDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == 1)
 	{
 		KillTimer(1);
+		SetTimer(2, 2000, NULL);
 		ShowTray();
+		ResizeWebBrowser();
 	}
 	else if (nIDEvent == 2)
 	{
@@ -56,7 +58,7 @@ void CTraytestDlg::OnMove(int x, int y)
 {
 	CDialogEx::OnMove(x, y);
 
-	ResizeWebBrowser();
+	//ResizeWebBrowser();
 }
 
 void CTraytestDlg::OnDestroy()
@@ -87,8 +89,7 @@ BOOL CTraytestDlg::OnInitDialog()
 
 	InitWebBrowser();
 
-	SetTimer(1, 1000, NULL);
-	SetTimer(2, 5000, NULL);
+	SetTimer(1, 2000, NULL);
 
 	return TRUE;
 }
@@ -127,8 +128,9 @@ void CTraytestDlg::DrawSkin(CDC* pDC)
 
 void CTraytestDlg::InitWebBrowser()
 {
-	CRect rectClient;
-	GetClientRect(rectClient);
+	//CRect rectClient;
+	//GetClientRect(rectClient);
+	CRect rectClient(-3000, -3000, 0, 0);
 
 	m_pWebBrowser = std::make_unique<CWebBrowser>();
 	if (m_pWebBrowser != nullptr)

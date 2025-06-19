@@ -317,6 +317,15 @@ void CWebBrowser::RegisterEventHandlers()
 					}
 				}
 
+				//½ºÅ©·Ñ ¼û±è
+				if (success)
+				{
+					m_pImpl->m_webView->ExecuteScript(
+						L"document.documentElement.style.overflow='hidden';"
+						L"document.body.style.overflow='hidden';",
+						nullptr);
+				}
+
 				wil::unique_cotaskmem_string uri;
 				m_pImpl->m_webView->get_Source(&uri);
 
