@@ -296,9 +296,12 @@ void CFinderAllFilesDlg::InitWebVeiw()
                                             {
                                                 m_strFolderPath = path;
 
+                                                //html 에 보여줄때 태그문제 처리
+                                                CString escapedFolderPath = EscapeForJS(path);
+
                                                 //선택된 폴더 경로 html 에 보여줌
                                                 CString js;
-                                                js.Format(L"showSelectedFolder(`%s`);", path);
+                                                js.Format(L"showSelectedFolder(`%s`);", escapedFolderPath);
                                                 m_webView->ExecuteScript(js, nullptr);
 
                                                 //폴더 검색
@@ -370,6 +373,7 @@ void CFinderAllFilesDlg::SearchAllFiles(CString strDirectory)
             //파일 경로
             CString strType = GetRelativePath(strFullPath, m_strFolderPath);
 
+            //html 에 보여줄때 태그문제 처리
             CString escapedFileName = EscapeForJS(strFileName);
             CString escapedFullPath = EscapeForJS(strFullPath);
             CString escapedType = EscapeForJS(strType);
