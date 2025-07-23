@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZipunZip_test", "ZipunZip_test\ZipunZip_test.vcxproj", "{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Debug|x64.ActiveCfg = Debug|x64
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Debug|x64.Build.0 = Debug|x64
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Debug|x86.ActiveCfg = Debug|Win32
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Debug|x86.Build.0 = Debug|Win32
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Release|x64.ActiveCfg = Release|x64
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Release|x64.Build.0 = Release|x64
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Release|x86.ActiveCfg = Release|Win32
+		{171D94D5-A2E3-E3DD-B3E7-62FA606EFD48}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44F97295-54E0-4AA7-AFDA-1A48539F8419}
+	EndGlobalSection
+EndGlobal
