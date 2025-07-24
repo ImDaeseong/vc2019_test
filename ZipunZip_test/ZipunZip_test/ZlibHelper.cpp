@@ -132,6 +132,8 @@ int CZlibHelper::CreateZipMultipleFiles(const CString& zipPath, const std::vecto
 
 int CZlibHelper::CreateZipFromFolder(const CString& zipPath, const CString& folderPath)
 {
+    USES_CONVERSION;
+
     void* writer = mz_zip_writer_create();
     if (writer == nullptr)
     {
@@ -139,6 +141,17 @@ int CZlibHelper::CreateZipFromFolder(const CString& zipPath, const CString& fold
         return 1;
     }
 
+    // Convert zip path to UTF-8
+    CT2A zipPathUtf8(zipPath, CP_UTF8);
+
+    if (mz_zip_writer_open_file(writer, (const char*)zipPathUtf8, 0, 0) != MZ_OK)
+    {
+        mz_zip_writer_delete(&writer);
+        return 1;
+    }
+
+    //한글 문제
+    /*
     CT2A zipPathA(zipPath);
     const char* zipPathStr = (LPCSTR)zipPathA;
 
@@ -148,6 +161,7 @@ int CZlibHelper::CreateZipFromFolder(const CString& zipPath, const CString& fold
         mz_zip_writer_delete(&writer);
         return 1;
     }
+    */
 
     int result = AddFolderToZip(writer, folderPath, folderPath);
 
