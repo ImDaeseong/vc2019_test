@@ -19,9 +19,8 @@
 
 //추가종속성
 //zlib.lib
-//minizip - ng.lib
+//minizip-ng.lib
 //bcrypt.lib
-
 
 CZlibHelper::CZlibHelper()
 {
@@ -31,14 +30,7 @@ CZlibHelper::~CZlibHelper()
 {
 }
 
-int CZlibHelper::CreateZip(const CString& zipPath, const CString& fileToAdd)
-{
-    std::vector<CString> files;
-    files.push_back(fileToAdd);
-    return CreateZipMultipleFiles(zipPath, files);
-}
-
-int CZlibHelper::CreateZipMultipleFiles(const CString& zipPath, const std::vector<CString>& filesToAdd)
+int CZlibHelper::CreateZipA(const CString& zipPath, const CString& fileToAdd)
 {
     void* writer = mz_zip_writer_create();
     if (writer == nullptr)
@@ -56,6 +48,61 @@ int CZlibHelper::CreateZipMultipleFiles(const CString& zipPath, const std::vecto
         mz_zip_writer_delete(&writer);
         return 1;
     }
+
+    CString fileName = fileToAdd.Mid(fileToAdd.ReverseFind(L'\\') + 1);
+
+    int result = AddFileToZip(writer, fileToAdd, fileName);
+
+    mz_zip_writer_close(writer);
+    mz_zip_writer_delete(&writer);
+
+    if (result == 0)
+    {
+        //printf("ZIP created successfully from folder: %s\n", zipPathStr);
+    }
+
+    return result;
+}
+
+int CZlibHelper::CreateZip(const CString& zipPath, const CString& fileToAdd)
+{
+    std::vector<CString> files;
+    files.push_back(fileToAdd);
+    return CreateZipMultipleFiles(zipPath, files);
+}
+
+int CZlibHelper::CreateZipMultipleFiles(const CString& zipPath, const std::vector<CString>& filesToAdd)
+{
+    USES_CONVERSION;
+
+    void* writer = mz_zip_writer_create();
+    if (writer == nullptr)
+    {
+        //printf("Failed to create zip writer\n");
+        return 1;
+    }
+
+    // Convert zip path to UTF-8
+    CT2A zipPathUtf8(zipPath, CP_UTF8);
+
+    if (mz_zip_writer_open_file(writer, (const char*)zipPathUtf8, 0, 0) != MZ_OK)
+    {
+        mz_zip_writer_delete(&writer);
+        return 1;
+    }
+
+    //한글 문제
+    /*
+    CT2A zipPathA(zipPath);
+    const char* zipPathStr = (LPCSTR)zipPathA;
+
+    if (mz_zip_writer_open_file(writer, zipPathStr, 0, 0) != MZ_OK)
+    {
+        //printf("Failed to open zip file for writing: %s\n", zipPathStr);
+        mz_zip_writer_delete(&writer);
+        return 1;
+    }
+    */
 
     int totalFiles = (int)filesToAdd.size();
     int currentFile = 0;

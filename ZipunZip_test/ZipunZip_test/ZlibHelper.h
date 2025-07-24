@@ -8,6 +8,8 @@ public:
     CZlibHelper();
     ~CZlibHelper();
 
+    int CreateZipA(const CString& zipPath, const CString& fileToAdd);
+
     // 단일 파일을 ZIP으로 압축
     int CreateZip(const CString& zipPath, const CString& fileToAdd);
 
