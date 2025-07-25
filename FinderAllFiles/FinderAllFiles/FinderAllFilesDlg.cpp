@@ -23,6 +23,7 @@ using namespace Microsoft::WRL;
 CString GetHtmlContent()
 {
     CString html;
+
     html += "<html>\n";
     html += "<head>\n";
     html += "<meta charset=\"UTF-8\">\n";
@@ -41,11 +42,14 @@ CString GetHtmlContent()
     html += "}\n";
     html += "</style>\n";
     html += "</head>\n";
+    
     html += "<body>\n";
     html += "<h3>파일 탐색기</h3>\n";
     html += "<button onclick=\"requestFolder()\">폴더 선택</button>\n";
     html += "<button onclick=\"saveChanges()\">저장</button>\n"; 
+    
     html += "<div id=\"selectedFolder\" style=\"margin:10px 0; font-weight:bold;\"></div>\n";
+   
     html += "<table id=\"fileTable\">\n";
     html += "<thead>\n";
     html += "<tr>\n";
@@ -58,6 +62,7 @@ CString GetHtmlContent()
     html += "</tbody>\n";
     html += "</table>\n";
     html += "<script>\n";
+    
     html += "function addFileRow(name, path, type) {\n";
     html += "  const tbody = document.getElementById('fileTableBody');\n";
     html += "  const row = tbody.insertRow();\n";
@@ -69,11 +74,13 @@ CString GetHtmlContent()
     html += "  cell3.textContent = type;\n";
     html += "  cell3.contentEditable = 'true';\n";  // 수정 가능하게 설정
     html += "}\n";
+    
     html += "function requestFolder() {\n";
     html += "  if (window.chrome && window.chrome.webview) {\n";
     html += "    window.chrome.webview.postMessage({ action: 'selectFolder' });\n";
     html += "  }\n";
     html += "}\n";
+    
     html += "function showSelectedFolder(path) {\n";
     html += "  document.getElementById('selectedFolder').textContent = '선택된 폴더: ' + path;\n";
     html += "  document.getElementById('fileTableBody').innerHTML = '';\n";
@@ -102,6 +109,7 @@ CString GetHtmlContent()
     html += "cols.forEach(function(th) {\n";
     html += "  const resizer = th.querySelector('.resizer');\n";
     html += "  resizer.addEventListener('mousedown', initResize);\n";
+    
     html += "  function initResize(e) {\n";
     html += "    currentCol = th;\n";
     html += "    startX = e.pageX;\n";
@@ -109,12 +117,14 @@ CString GetHtmlContent()
     html += "    document.addEventListener('mousemove', resizeColumn);\n";
     html += "    document.addEventListener('mouseup', stopResize);\n";
     html += "  }\n";
+    
     html += "  function resizeColumn(e) {\n";
     html += "    const newWidth = startWidth + (e.pageX - startX);\n";
     html += "    if (newWidth > 30) {\n";
     html += "      currentCol.style.width = newWidth + 'px';\n";
     html += "    }\n";
     html += "  }\n";
+    
     html += "  function stopResize(e) {\n";
     html += "    document.removeEventListener('mousemove', resizeColumn);\n";
     html += "    document.removeEventListener('mouseup', stopResize);\n";

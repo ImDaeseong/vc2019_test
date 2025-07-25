@@ -1,5 +1,4 @@
 #pragma once
-
 #include <afx.h>
 #include <vector>
 #include <string>
