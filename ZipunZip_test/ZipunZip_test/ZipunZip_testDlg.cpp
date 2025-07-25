@@ -118,8 +118,6 @@ void unzipMulit()
 
     for (const auto& file : fileList)
     {
-        //wprintf(L"파일: %s\n", file.GetString());
-
         CString strPath = extractFolder + L"\\" + file;
 
         int result = zipHelper.ExtractSpecificFile(zipPath_unzip, file, strPath);

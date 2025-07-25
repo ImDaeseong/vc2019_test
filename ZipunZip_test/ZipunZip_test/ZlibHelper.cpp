@@ -32,6 +32,8 @@ CZlibHelper::~CZlibHelper()
 
 int CZlibHelper::CreateZipA(const CString& zipPath, const CString& fileToAdd)
 {
+    USES_CONVERSION;
+
     void* writer = mz_zip_writer_create();
     if (writer == nullptr)
     {
@@ -39,10 +41,9 @@ int CZlibHelper::CreateZipA(const CString& zipPath, const CString& fileToAdd)
         return 1;
     }
 
-    CT2A zipPathA(zipPath);
-    const char* zipPathStr = (LPCSTR)zipPathA;
-
-    if (mz_zip_writer_open_file(writer, zipPathStr, 0, 0) != MZ_OK)
+    // Convert zip path to UTF-8
+    CT2A zipPathUtf8(zipPath, CP_UTF8);
+    if (mz_zip_writer_open_file(writer, (const char*)zipPathUtf8, 0, 0) != MZ_OK)
     {
         //printf("Failed to open zip file for writing: %s\n", zipPathStr);
         mz_zip_writer_delete(&writer);
@@ -84,25 +85,11 @@ int CZlibHelper::CreateZipMultipleFiles(const CString& zipPath, const std::vecto
 
     // Convert zip path to UTF-8
     CT2A zipPathUtf8(zipPath, CP_UTF8);
-
     if (mz_zip_writer_open_file(writer, (const char*)zipPathUtf8, 0, 0) != MZ_OK)
     {
         mz_zip_writer_delete(&writer);
         return 1;
     }
-
-    //한글 문제
-    /*
-    CT2A zipPathA(zipPath);
-    const char* zipPathStr = (LPCSTR)zipPathA;
-
-    if (mz_zip_writer_open_file(writer, zipPathStr, 0, 0) != MZ_OK)
-    {
-        //printf("Failed to open zip file for writing: %s\n", zipPathStr);
-        mz_zip_writer_delete(&writer);
-        return 1;
-    }
-    */
 
     int totalFiles = (int)filesToAdd.size();
     int currentFile = 0;
@@ -143,25 +130,11 @@ int CZlibHelper::CreateZipFromFolder(const CString& zipPath, const CString& fold
 
     // Convert zip path to UTF-8
     CT2A zipPathUtf8(zipPath, CP_UTF8);
-
     if (mz_zip_writer_open_file(writer, (const char*)zipPathUtf8, 0, 0) != MZ_OK)
     {
         mz_zip_writer_delete(&writer);
         return 1;
     }
-
-    //한글 문제
-    /*
-    CT2A zipPathA(zipPath);
-    const char* zipPathStr = (LPCSTR)zipPathA;
-
-    if (mz_zip_writer_open_file(writer, zipPathStr, 0, 0) != MZ_OK)
-    {
-        //printf("Failed to open zip file for writing: %s\n", zipPathStr);
-        mz_zip_writer_delete(&writer);
-        return 1;
-    }
-    */
 
     int result = AddFolderToZip(writer, folderPath, folderPath);
 
@@ -178,6 +151,8 @@ int CZlibHelper::CreateZipFromFolder(const CString& zipPath, const CString& fold
 
 int CZlibHelper::ExtractZip(const CString& zipPath, const CString& extractFolder)
 {
+    USES_CONVERSION;
+
     void* reader = mz_zip_reader_create();
     if (reader == NULL)
     {
@@ -185,17 +160,16 @@ int CZlibHelper::ExtractZip(const CString& zipPath, const CString& extractFolder
         return 1;
     }
 
-    CT2A zipPathA(zipPath);
-    const char* zipPathStr = (LPCSTR)zipPathA;
-
-    int32_t openResult = mz_zip_reader_open_file(reader, zipPathStr);
+    // Convert zip path to UTF-8
+    CT2A zipPathUtf8(zipPath, CP_UTF8);
+    int32_t openResult = mz_zip_reader_open_file(reader, (const char*)zipPathUtf8);
     if (openResult != MZ_OK)
     {
         //printf("Failed to open zip file: %s, Error code: %d\n", zipPathStr, openResult);
         mz_zip_reader_delete(&reader);
         return 1;
     }
-
+    
     if (!CreateDirectoriesRecursive(extractFolder))
     {
         //printf("Failed to create extraction folder: %ws\n", extractFolder.GetString());
@@ -329,13 +303,16 @@ int CZlibHelper::ExtractZip(const CString& zipPath, const CString& extractFolder
 
 int CZlibHelper::GetZipFileList(const CString& zipPath, std::vector<CString>& fileList)
 {
+    USES_CONVERSION;
+
     fileList.clear();
 
     void* reader = mz_zip_reader_create();
     if (reader == NULL) return 1;
 
-    CT2A zipPathA(zipPath);
-    if (mz_zip_reader_open_file(reader, (LPCSTR)zipPathA) != MZ_OK)
+    // Convert zip path to UTF-8
+    CT2A zipPathUtf8(zipPath, CP_UTF8);
+    if (mz_zip_reader_open_file(reader, (const char*)zipPathUtf8) != MZ_OK)
     {
         mz_zip_reader_delete(&reader);
         return 1;
@@ -347,7 +324,12 @@ int CZlibHelper::GetZipFileList(const CString& zipPath, std::vector<CString>& fi
         mz_zip_file* file_info = nullptr;
         if (mz_zip_reader_entry_get_info(reader, &file_info) == MZ_OK && file_info->filename != NULL)
         {
-            fileList.push_back(CString(CA2W(file_info->filename)));
+            CString fileName;
+            fileName = CString(CA2W(file_info->filename, CP_UTF8));
+            if (fileName.GetLength() > 0)
+            {
+                fileList.push_back(fileName);
+            }
         }
         result = mz_zip_reader_goto_next_entry(reader);
     }
@@ -359,18 +341,21 @@ int CZlibHelper::GetZipFileList(const CString& zipPath, std::vector<CString>& fi
 
 int CZlibHelper::ExtractSpecificFile(const CString& zipPath, const CString& fileNameInZip, const CString& outputPath)
 {
+    USES_CONVERSION;
+
     void* reader = mz_zip_reader_create();
     if (reader == NULL) return 1;
 
-    CT2A zipPathA(zipPath);
-    if (mz_zip_reader_open_file(reader, (LPCSTR)zipPathA) != MZ_OK)
+    // Convert zip path to UTF-8
+    CT2A zipPathUtf8(zipPath, CP_UTF8);
+    if (mz_zip_reader_open_file(reader, (const char*)zipPathUtf8) != MZ_OK)
     {
         mz_zip_reader_delete(&reader);
         return 1;
     }
 
-    CT2A fileNameA(fileNameInZip);
-    int32_t result = mz_zip_reader_locate_entry(reader, (LPCSTR)fileNameA, 0);
+    CT2A fileNameUtf8(fileNameInZip, CP_UTF8);
+    int32_t result = mz_zip_reader_locate_entry(reader, (const char*)fileNameUtf8, 0);
     if (result != MZ_OK)
     {
         //printf("File not found in zip: %ws\n", fileNameInZip.GetString());
@@ -379,15 +364,23 @@ int CZlibHelper::ExtractSpecificFile(const CString& zipPath, const CString& file
         return 1;
     }
 
-    // 출력 디렉토리 생성
-    int pos = outputPath.ReverseFind(L'\\');
+    // 출력 디렉토리 생성 - 혼합된 구분자 처리
+    int pos1 = outputPath.ReverseFind(L'\\');
+    int pos2 = outputPath.ReverseFind(L'/');
+    int pos = max(pos1, pos2);  // 더 뒤에 있는 구분자 위치 사용
     if (pos >= 0)
     {
         CString dirPath = outputPath.Left(pos);
         CreateDirectoriesRecursive(dirPath);
     }
+    
+    //기존 파일이 읽기 전용이거나 사용 중일 수 있으므로 먼저 속성 변경 시도
+    if (PathFileExists(outputPath))
+    {
+        SetFileAttributes(outputPath, FILE_ATTRIBUTE_NORMAL);
+    }
 
-    HANDLE hFile = CreateFile(outputPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE hFile = CreateFile(outputPath, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         mz_zip_reader_close(reader);
@@ -425,38 +418,36 @@ int CZlibHelper::ExtractSpecificFile(const CString& zipPath, const CString& file
 
 BOOL CZlibHelper::CreateDirectoriesRecursive(LPCTSTR lpszPath)
 {
-    if (lpszPath == NULL || *lpszPath == _T('\0')) return FALSE;
+    if (lpszPath == NULL || *lpszPath == _T('\0'))
+        return FALSE;
 
-    LPTSTR pszPathCopy = _tcsdup(lpszPath);
-    if (pszPathCopy == NULL) return FALSE;
+    // 이미 존재하는지 확인
+    if (PathFileExists(lpszPath))
+        return TRUE;
 
-    LPTSTR p = pszPathCopy;
+    CString strPath(lpszPath);
+    int nPos = strPath.ReverseFind(_T('\\'));
+    if (nPos == -1)
+        nPos = strPath.ReverseFind(_T('/'));
 
-    if (_istalpha(*p) && *(p + 1) == _T(':')) p += 2;
-    while (*p == _T('\\') || *p == _T('/')) p++;
-
-    while (*p != _T('\0'))
+    if (nPos > 0)
     {
-        while (*p != _T('\\') && *p != _T('/') && *p != _T('\0')) p++;
-
-        TCHAR c = *p;
-        *p = _T('\0');
-
-        if (!CreateDirectory(pszPathCopy, NULL))
-        {
-            DWORD dwError = GetLastError();
-            if (dwError != ERROR_ALREADY_EXISTS)
-            {
-                free(pszPathCopy);
-                return FALSE;
-            }
-        }
-
-        *p = c;
-        if (c != _T('\0')) p++;
+        // 부모 디렉토리 먼저 생성
+        CString strParent = strPath.Left(nPos);
+        if (!CreateDirectoriesRecursive(strParent))
+            return FALSE;
     }
 
-    free(pszPathCopy);
+    // 현재 디렉토리 생성
+    if (!CreateDirectory(lpszPath, NULL))
+    {
+        DWORD dwError = GetLastError();
+        if (dwError != ERROR_ALREADY_EXISTS)
+        {
+            return FALSE;
+        }
+    }
+
     return TRUE;
 }
 
@@ -482,11 +473,13 @@ int CZlibHelper::AddFileToZip(void* writer, const CString& filePath, const CStri
     }
     CloseHandle(hFile);
 
-    CT2A fileNameInZipA(fileNameInZip);
+    // UTF-8로 변환
+    CT2A fileNameInZipUtf8(fileNameInZip, CP_UTF8);
     mz_zip_file file_info;
     memset(&file_info, 0, sizeof(file_info));
-    file_info.filename = (LPCSTR)fileNameInZipA;
+    file_info.filename = (const char*)fileNameInZipUtf8;
     file_info.compression_method = MZ_COMPRESS_METHOD_DEFLATE;
+    file_info.flag |= MZ_ZIP_FLAG_UTF8; //UTF-8 플래그 설정
 
     int result = (mz_zip_writer_add_buffer(writer, buffer, fileSize, &file_info) == MZ_OK) ? 0 : 1;
     delete[] buffer;
