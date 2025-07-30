@@ -381,12 +381,12 @@ void CFinderAllFilesDlg::SearchAllFiles(CString strDirectory)
             CString strFileName = finder.GetFileName();
             
             //파일 경로
-            CString strType = GetRelativePath(strFullPath, m_strFolderPath);
+            CString strFolderType = GetCurrentFolderPath(strFullPath, m_strFolderPath);
 
             //html 에 보여줄때 태그문제 처리
             CString escapedFileName = EscapeForJS(strFileName);
             CString escapedFullPath = EscapeForJS(strFullPath);
-            CString escapedType = EscapeForJS(strType);
+            CString escapedType = EscapeForJS(strFolderType);
 
             CString js;
             js.Format(L"addFileRow(`%s`, `%s`, `%s`);", escapedFileName, escapedFullPath, escapedType);
@@ -454,20 +454,23 @@ CString CFinderAllFilesDlg::GetModulePath()
     return strPath;
 }
 
-CString CFinderAllFilesDlg::GetRelativePath(const CString& fullPath, const CString& basePath)
+CString CFinderAllFilesDlg::GetCurrentFolderPath(const CString& strCurrentPath, const CString& strSelectPath)
 {
-    int baseLen = basePath.GetLength();
-    CString base = basePath;
-    if (!base.IsEmpty() && base[baseLen - 1] != '\\')
-    {
-        base += '\\';
-        baseLen++;
-    }
+    CString strReturn = _T("");
+    CString strBasePath = strSelectPath;
 
-    if (fullPath.Left(baseLen).CompareNoCase(base) == 0)
-    {
-        return fullPath.Mid(baseLen - 1);
-    }
+    // strBasePath 끝에 \ 없으면 붙이기
+    if (strBasePath.Right(1) != _T("\\")) strBasePath += _T("\\");
 
-    return fullPath;
+    // basePath 포함 여부 체크 후 상대 경로 계산
+    if (strCurrentPath.Left(strBasePath.GetLength()).CompareNoCase(strBasePath) == 0)
+    {
+        CString relativePath = strCurrentPath.Mid(strBasePath.GetLength());
+
+        int lastBackslash = relativePath.ReverseFind(_T('\\'));
+
+        if (lastBackslash != -1)
+            strReturn = relativePath.Left(lastBackslash);  // 폴더명 추출
+    }
+    return strReturn;
 }

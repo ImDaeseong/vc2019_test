@@ -30,7 +30,7 @@ private:
 	static int CALLBACK BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 	CString SelectFolder(HWND hWnd, const CString& strInitialDir);
 	CString GetModulePath();
-	CString GetRelativePath(const CString& fullPath, const CString& basePath);
+	CString GetCurrentFolderPath(const CString& strCurrentPath, const CString& strSelectPath);
 
 	CString m_strFolderPath;
 
