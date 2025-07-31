@@ -71,18 +71,18 @@ CString GetHtmlContent()
 </head>
 <body>
     <div id="resultContainer">
-        <h3>MD5 결과</h3>
+        <h3>파일 정보</h3>
         <table id="fileTable">
             <colgroup>
-                <col id="col-name">
-                <col id="col-md5">
-                <col id="col-path">
+                <col id="col-name" style="width: 300px;">
+                <col id="col-version" style="width: 120px;">
+                <col id="col-path" style="width: 400px;">
             </colgroup>
             <thead>
                 <tr>
-                    <th>파일 이름<div class="resizer"></div></th>
+                    <th>파일 이름<div class="resizer"></div></th>                    
+                    <th>파일 정보<div class="resizer"></div></th> 
                     <th>파일 경로<div class="resizer"></div></th>
-                    <th>파일 정보<div class="resizer"></div></th>
                 </tr>
             </thead>
             <tbody id="fileTableBody">
@@ -126,7 +126,7 @@ CString GetHtmlContent()
         });
 
         // 중복 체크 및 행 추가
-        function addFileToTable(name, path, info) {
+        function addFileToTable(name, info, path) {
             for (const row of fileTableBody.rows) {
                 if (row.cells[2] && row.cells[2].textContent === path) {
                     return; // 이미 추가된 경로는 무시
@@ -135,9 +135,9 @@ CString GetHtmlContent()
 
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td title="${name}">${name}</td>
-                <td title="${path}">${path}</td>
+                <td title="${name}">${name}</td>                
                 <td title="${info}">${info}</td>
+                <td title="${path}">${path}</td>
             `;
             fileTableBody.appendChild(row);
         }
@@ -179,7 +179,7 @@ BOOL CDragDropStatictestDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-    ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW, 0);
+    //ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW, 0);
 
     if (FAILED(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED)))
         return FALSE;
@@ -223,7 +223,7 @@ void CDragDropStatictestDlg::OnSize(UINT nType, int cx, int cy)
 void CDragDropStatictestDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
     //최소 크기 설정
-    lpMMI->ptMinTrackSize.x = 800;
+    lpMMI->ptMinTrackSize.x = 1200;
     lpMMI->ptMinTrackSize.y = 800;
 
     CDialogEx::OnGetMinMaxInfo(lpMMI);
@@ -405,8 +405,8 @@ void CDragDropStatictestDlg::setData(const std::vector<CString>& strFilePaths)
         js.Format(
             _T("addFileToTable(\"%s\", \"%s\", \"%s\");"),
             EscapeForJS(strFileName),
-            EscapeForJS(strFilePath),
-            EscapeForJS(strFileInfo)
+            EscapeForJS(strFileInfo),
+            EscapeForJS(strFilePath)
         );
 
         if (m_webView)
