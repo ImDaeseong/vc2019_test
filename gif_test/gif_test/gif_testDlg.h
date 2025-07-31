@@ -24,4 +24,8 @@ protected:
 
 private:
 	CGifStatic m_gif;	
+
+	CGifOverlayWnd* m_overWnd;
+public:
+	afx_msg void OnBnClickedButton5();
 };

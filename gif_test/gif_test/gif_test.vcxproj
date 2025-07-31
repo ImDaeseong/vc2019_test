@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GifOverlayWnd.h" />
     <ClInclude Include="GifStatic.h" />
     <ClInclude Include="gif_test.h" />
     <ClInclude Include="gif_testDlg.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GifOverlayWnd.cpp" />
     <ClCompile Include="GifStatic.cpp" />
     <ClCompile Include="gif_test.cpp" />
     <ClCompile Include="gif_testDlg.cpp" />
@@ -210,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\a.gif" />
+    <Image Include="res\b.gif" />
     <Image Include="res\gif_test.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

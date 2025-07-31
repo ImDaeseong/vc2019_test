@@ -14,5 +14,6 @@
 using namespace Gdiplus;
 
 #include "GifStatic.h"
+#include "GifOverlayWnd.h"
 
 #endif //PCH_H

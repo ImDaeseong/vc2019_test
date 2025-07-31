@@ -36,6 +36,9 @@
     <ClInclude Include="GifStatic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GifOverlayWnd.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gif_test.cpp">
@@ -48,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GifStatic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GifOverlayWnd.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,6 +72,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\a.gif">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\b.gif">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
