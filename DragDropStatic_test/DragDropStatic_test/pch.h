@@ -10,6 +10,10 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
 
+#include <VersionHelpers.h>
+#include <winver.h>
+#pragma comment(lib, "version.lib")
+
 #include <vector> 
 
 #include <gdiplus.h>

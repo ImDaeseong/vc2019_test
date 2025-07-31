@@ -11,6 +11,7 @@
 
 using namespace Microsoft::WRL;
 
+
 CString GetHtmlContent()
 {
     CString html;
@@ -34,18 +35,20 @@ CString GetHtmlContent()
             background-color: #fafafa;
             border: 1px solid #ddd;
             border-radius: 8px;
+            overflow-x: auto;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed; /* 고정 테이블 레이아웃 */
+            table-layout: fixed;
+            min-width: 800px;
         }
         col {
-            width: 150px; /* 기본 픽셀 너비 지정 */
+            width: 200px;
         }
         th, td {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 8px;
             position: relative;
             text-align: left;
             overflow: hidden;
@@ -54,7 +57,6 @@ CString GetHtmlContent()
         }
         th {
             background-color: #f0f0f0;
-            user-select: none;
         }
         .resizer {
             position: absolute;
@@ -69,62 +71,75 @@ CString GetHtmlContent()
 </head>
 <body>
     <div id="resultContainer">
-        <h3>파일 결과</h3>
+        <h3>MD5 결과</h3>
         <table id="fileTable">
             <colgroup>
-                <col style="width: 150px;">
-                <col style="width: 150px;">
+                <col id="col-name">
+                <col id="col-md5">
+                <col id="col-path">
             </colgroup>
             <thead>
                 <tr>
                     <th>파일 이름<div class="resizer"></div></th>
                     <th>파일 경로<div class="resizer"></div></th>
+                    <th>파일 정보<div class="resizer"></div></th>
                 </tr>
             </thead>
             <tbody id="fileTableBody">
-                <!-- 파일 데이터가 여기에 추가됩니다 -->
+                <!-- 데이터가 여기에 추가됩니다 -->
             </tbody>
         </table>
     </div>
 
     <script>
-        const table = document.getElementById('fileTable');
-        const colGroup = table.querySelector('colgroup').children;
-        const headers = table.querySelectorAll('th');
+        const colGroup = document.querySelectorAll("col");
+        const headers = document.querySelectorAll("th");
+        const fileTableBody = document.getElementById("fileTableBody");
 
+        // Resizer 이벤트 등록
         headers.forEach((th, index) => {
-            const resizer = th.querySelector('.resizer');
+            const resizer = th.querySelector(".resizer");
+            if (!resizer) return;
+
             let startX, startWidth;
 
-            resizer.addEventListener('mousedown', (e) => {
+            resizer.addEventListener("mousedown", (e) => {
                 startX = e.pageX;
-                startWidth = colGroup[index].getBoundingClientRect().width;
+                const col = colGroup[index];
+                startWidth = parseInt(window.getComputedStyle(col).width, 10);
 
-                function onMouseMove(e) {
+                const onMouseMove = (e) => {
                     const newWidth = startWidth + (e.pageX - startX);
-                    if (newWidth > 30) {
-                        colGroup[index].style.width = newWidth + 'px';
+                    if (newWidth > 50) {
+                        col.style.width = newWidth + "px";
                     }
-                }
+                };
 
-                function onMouseUp() {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('mouseup', onMouseUp);
-                }
+                const onMouseUp = () => {
+                    document.removeEventListener("mousemove", onMouseMove);
+                    document.removeEventListener("mouseup", onMouseUp);
+                };
 
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", onMouseUp);
             });
         });
 
-        function addFileToTable(name, path) {
-            const body = document.getElementById('fileTableBody');
-            const row = document.createElement('tr');
+        // 중복 체크 및 행 추가
+        function addFileToTable(name, path, info) {
+            for (const row of fileTableBody.rows) {
+                if (row.cells[2] && row.cells[2].textContent === path) {
+                    return; // 이미 추가된 경로는 무시
+                }
+            }
+
+            const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${name}</td>
-                <td>${path}</td>
+                <td title="${name}">${name}</td>
+                <td title="${path}">${path}</td>
+                <td title="${info}">${info}</td>
             `;
-            body.appendChild(row);
+            fileTableBody.appendChild(row);
         }
     </script>
 </body>
@@ -134,8 +149,9 @@ CString GetHtmlContent()
     return html;
 }
 
+
 //IDC_DROP_STATIC 사이즈 설정
-static int nHeight = 60;
+static int nHeight = 100;
 static int nMargin = 20;
 
 #ifdef _DEBUG
@@ -337,20 +353,44 @@ CString CDragDropStatictestDlg::EscapeForJS(const CString& str)
     for (int i = 0; i < str.GetLength(); ++i)
     {
         TCHAR ch = str[i];
-        if (ch == '\\')
-            escaped += _T("\\\\");  // 백슬래시 2개로 변환
-        else if (ch == '\'')
-            escaped += _T("\\'");   // 작은 따옴표 escape
-        else if (ch == '\"')
-            escaped += _T("\\\"");  // 큰 따옴표 escape
-        else if (ch == '\r')
-            escaped += _T("\\r");
-        else if (ch == '\n')
-            escaped += _T("\\n");
-        else
-            escaped += ch;
+        if (ch == '\\')       escaped += _T("\\\\");
+        else if (ch == '\'')  escaped += _T("\\'");
+        else if (ch == '\"')  escaped += _T("\\\"");
+        else if (ch == '\r')  escaped += _T("\\r");
+        else if (ch == '\n')  escaped += _T("\\n");
+        else                  escaped += ch;
     }
     return escaped;
+}
+
+CString CDragDropStatictestDlg::GetFileVersionString(const CString& strFilePath)
+{
+    DWORD handle = 0;
+    DWORD size = GetFileVersionInfoSize(strFilePath, &handle);
+    if (size == 0)
+        return _T(""); // 버전 정보 없음
+
+    std::vector<BYTE> buffer(size);
+    if (!GetFileVersionInfo(strFilePath, handle, size, buffer.data()))
+        return _T("");
+
+    VS_FIXEDFILEINFO* fileInfo = nullptr;
+    UINT len = 0;
+    if (!VerQueryValue(buffer.data(), _T("\\"), (LPVOID*)&fileInfo, &len))
+        return _T("");
+
+    if (fileInfo == nullptr)
+        return _T("");
+
+    // 버전 조합: major.minor.build.revision
+    CString version;
+    version.Format(_T("%d.%d.%d.%d"),
+        HIWORD(fileInfo->dwFileVersionMS),
+        LOWORD(fileInfo->dwFileVersionMS),
+        HIWORD(fileInfo->dwFileVersionLS),
+        LOWORD(fileInfo->dwFileVersionLS));
+
+    return version;
 }
 
 void CDragDropStatictestDlg::setData(const std::vector<CString>& strFilePaths)
@@ -359,14 +399,19 @@ void CDragDropStatictestDlg::setData(const std::vector<CString>& strFilePaths)
     {
         CString strFilePath(path);
         CString strFileName = strFilePath.Mid(strFilePath.ReverseFind(L'\\') + 1);
-        
+        CString strFileInfo = GetFileVersionString(strFilePath);
+
         CString js;
         js.Format(
-            _T("addFileToTable(\"%s\", \"%s\");"),
+            _T("addFileToTable(\"%s\", \"%s\", \"%s\");"),
             EscapeForJS(strFileName),
-            EscapeForJS(strFilePath)
+            EscapeForJS(strFilePath),
+            EscapeForJS(strFileInfo)
         );
 
-        m_webView->ExecuteScript(js.GetString(), nullptr);
+        if (m_webView)
+        {
+            m_webView->ExecuteScript(js.GetString(), nullptr);
+        }
     }
 }

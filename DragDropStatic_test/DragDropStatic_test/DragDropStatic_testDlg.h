@@ -38,6 +38,7 @@ private:
 	void InitStatic();
 	void InitWebView();
 	CString EscapeForJS(const CString& str);
+	CString GetFileVersionString(const CString& strFilePath);
 
 public:
 	void setData(const std::vector<CString>& strFilePaths);
