@@ -67,11 +67,31 @@ CString GetHtmlContent()
             cursor: col-resize;
             user-select: none;
         }
+        #headerBar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #clearButton {
+            padding: 6px 12px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #clearButton:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
     <div id="resultContainer">
-        <h3>파일 정보</h3>
+        <div id="headerBar">
+            <h3 style="margin: 0;">파일 정보</h3>
+            <button id="clearButton">초기화</button>
+        </div>
         <table id="fileTable">
             <colgroup>
                 <col id="col-name" style="width: 300px;">
@@ -141,6 +161,14 @@ CString GetHtmlContent()
             `;
             fileTableBody.appendChild(row);
         }
+
+        // 초기화 버튼 동작
+        document.addEventListener("DOMContentLoaded", () => {
+            const clearButton = document.getElementById("clearButton");
+            clearButton.addEventListener("click", () => {
+                fileTableBody.innerHTML = "";
+            });
+        });
     </script>
 </body>
 </html>
