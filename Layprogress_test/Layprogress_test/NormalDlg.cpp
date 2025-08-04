@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(NormalDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 BOOL NormalDlg::PreTranslateMessage(MSG* pMsg)
@@ -39,15 +40,32 @@ BOOL NormalDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
+void NormalDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (nFlags & MK_LBUTTON)
+	{
+		PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
+		SystemParametersInfo(SPI_SETDRAGFULLWINDOWS, TRUE, 0, 0);
+	}
+	else
+	{
+		SystemParametersInfo(SPI_SETDRAGFULLWINDOWS, FALSE, 0, 0);
+	}
+
+	CDialogEx::OnMouseMove(nFlags, point);
+}
+
 void NormalDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
+
+	m_CircularBar.Stop();
 
 	KillTimer(1);
 
 	if (m_pbgImage)
 		delete m_pbgImage;
-	m_pbgImage = NULL;
+	m_pbgImage = NULL;	
 }
 
 void NormalDlg::OnPaint()
