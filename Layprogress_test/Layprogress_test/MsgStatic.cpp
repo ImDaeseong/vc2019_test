@@ -25,34 +25,42 @@ BOOL CMsgStatic::OnEraseBkgnd(CDC* pDC)
 void CMsgStatic::OnPaint()
 {
     CPaintDC dc(this);
-    
     CRect rect;
     GetClientRect(&rect);
 
     CDC memDC;
-    if (!memDC.CreateCompatibleDC(&dc)) return;
+    if (!memDC.CreateCompatibleDC(&dc))
+        return;
 
     CBitmap memBitmap;
-    if (!memBitmap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height())) return;
+    if (!memBitmap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height()))
+        return;
 
     CBitmap* pOldBitmap = memDC.SelectObject(&memBitmap);
-    if (!pOldBitmap) return;
+    if (!pOldBitmap)
+        return;
 
     Gdiplus::Graphics graphics(memDC.GetSafeHdc());
-    graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
 
-    // 배경 색 설정
+    // 고품질 텍스트 렌더링 설정
+    graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintClearTypeGridFit);
+    graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
+    graphics.SetCompositingQuality(Gdiplus::CompositingQualityHighQuality);
+
+    //배경으로 클리어
     graphics.Clear(Gdiplus::Color(255, 72, 72, 72));
+
+    Gdiplus::RectF rectF(0, 0, (REAL)rect.Width(), (REAL)rect.Height());
 
     //영역 확인시
     /*
-    //SolidBrush bgBrush(Color(255, 255, 0, 0));
-    //graphics.FillRectangle(&bgBrush, rectF);
+    SolidBrush bgBrush(Color(255, 255, 0, 0));
+    graphics.FillRectangle(&bgBrush, rectF);
     */
-
-    Gdiplus::RectF rectF(0, 0, (REAL)rect.Width(), (REAL)rect.Height());
-    Gdiplus::Font font(L"Tahoma", (REAL)m_nFontSize, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
-    Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 255));
+    
+    //폰트 설정
+    Gdiplus::Font font(L"맑은 고딕", (REAL)m_nFontSize, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
+    Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 255, 255));
 
     Gdiplus::StringFormat format(Gdiplus::StringFormatFlagsDisplayFormatControl);
     format.SetAlignment(Gdiplus::StringAlignmentCenter);
@@ -61,8 +69,6 @@ void CMsgStatic::OnPaint()
     graphics.DrawString(m_strMessage, -1, &font, rectF, &format, &brush);
 
     dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memDC, 0, 0, SRCCOPY);
-
-    // 리소스 해제
     memDC.SelectObject(pOldBitmap);
 }
 
@@ -79,16 +85,21 @@ void CMsgStatic::OnDrawLayerdWindow(Graphics& Gps)
     SolidBrush bgBrush(Color(255, 255, 0, 0));
     Gps.FillRectangle(&bgBrush, rectF);
     */
-
-    Gdiplus::Font font(L"Tahoma", (REAL)m_nFontSize, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
-    Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 255));
     
+    //고품질 텍스트 렌더링 설정
+    Gps.SetTextRenderingHint(Gdiplus::TextRenderingHintClearTypeGridFit);
+    Gps.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
+    Gps.SetCompositingQuality(Gdiplus::CompositingQualityHighQuality);
+
+    //폰트 설정
+    Gdiplus::Font font(L"맑은 고딕", (REAL)m_nFontSize, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
+    Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 255, 255));
+
     Gdiplus::StringFormat stringFormat(Gdiplus::StringFormatFlagsDisplayFormatControl);
     stringFormat.SetAlignment(Gdiplus::StringAlignmentCenter);
     stringFormat.SetLineAlignment(Gdiplus::StringAlignmentCenter);
 
-    Gps.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
-    Gps.DrawString(m_strMessage, -1, &font, rectF, &stringFormat, &brush);
+    Gps.DrawString(m_strMessage, -1, &font, rectF, &stringFormat, &brush);    
 }
 
 void CMsgStatic::SetMesssageText(CString sMessage)

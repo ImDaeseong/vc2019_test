@@ -186,7 +186,8 @@ void LayerDlg::DrawSkin(CDC* pDC)
 		m_pbgImage->m_pBitmap->GetHeight(),
 		UnitPixel);
 		
-	m_RoundLineBar.OnDrawLayerdWindow(gps);
+	//m_RoundLineBar.OnDrawLayerdWindow(gps);
+	m_RoundLineBarEx.OnDrawLayerdWindow(gps);
 
 	m_MsgMessage1.OnDrawLayerdWindow(gps);
 	m_MsgMessage2.OnDrawLayerdWindow(gps);
@@ -236,17 +237,28 @@ void LayerDlg::InitControls()
 	progressBarWnd->CreateEx(WS_EX_LAYERED | WS_EX_TOOLWINDOW, s_overlayClass, NULL, WS_POPUP | WS_VISIBLE, CRect(0,0,0,0), this, 0);
 	SetProPos();
 	progressBarWnd->Start();
-	
+		
+	/*
 	m_RoundLineBar.SubclassDlgItem(IDC_STATIC_LINE1, this);
 	m_RoundLineBar.MoveWindow(522, 552, 396, 27);
 	m_RoundLineBar.SetRange(0, 100);//범위 설정 (예: 0~100)	
 	m_RoundLineBar.SetPos(0);// 진행률 설정 (예: 30%)
+	*/
+
+	m_RoundLineBarEx.SubclassDlgItem(IDC_STATIC_LINE1, this);
+	m_RoundLineBarEx.MoveWindow(522, 552, 396, 27);
+	m_RoundLineBarEx.SetRange(0, 100);//범위 설정 (예: 0~100)	
+	m_RoundLineBarEx.SetPos(0);// 진행률 설정 (예: 30%)
+    m_RoundLineBarEx.EnableGradient(true);
+	m_RoundLineBarEx.EnableShadow(true);
+	m_RoundLineBarEx.SetBorderColor(RGB(180, 180, 180));
+	m_RoundLineBarEx.SetBorderWidth(0.5f);
 
 	m_MsgMessage1.SubclassDlgItem(IDC_STATIC_MESSAGE1, this);
 	m_MsgMessage1.MoveWindow(582, 458, 300, 70);
 	m_MsgMessage1.SetMesssageFontSize(26);
 	m_MsgMessage1.SetMesssageText(_T("업데이트 중입니다.\r\n잠시만 기다려 주세요."));
-
+	
 	m_MsgMessage2.SubclassDlgItem(IDC_STATIC_MESSAGE2, this);
 	m_MsgMessage2.MoveWindow(925, 551, 75, 27);
 	m_MsgMessage2.SetMesssageFontSize(20);
@@ -259,7 +271,9 @@ void LayerDlg::OnTimer(UINT_PTR nIDEvent)
 	if (m_nCount > 100)
 		m_nCount = 0;
 
-	m_RoundLineBar.SetPos(m_nCount); // 진행률: 0.0 ~ 1.0
+	//m_RoundLineBar.SetPos(m_nCount); // 진행률: 0.0 ~ 1.0
+
+	m_RoundLineBarEx.SetPos(m_nCount); // 진행률: 0.0 ~ 1.0
 
 	CString strMsg;
 	strMsg.Format(_T("%d%%"), m_nCount);

@@ -41,6 +41,7 @@ private:
 
 private:	
 	CRoundLineProgressBar m_RoundLineBar;
+	CRoundLineProgressBarEx m_RoundLineBarEx;
 	int m_nCount;
 
 	CMsgStatic m_MsgMessage1;
