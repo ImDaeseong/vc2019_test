@@ -471,12 +471,20 @@ int CZlibHelper::AddFileToZip(void* writer, const CString& filePath, const CStri
         CloseHandle(hFile);
         return 1;
     }
+
+    //파일 정보
+    mz_zip_file file_info;
+    memset(&file_info, 0, sizeof(file_info));
+
+    //압축 파일 날짜 생성 - 그냥 압축시점 날짜로 설정
+    const auto time = std::time(nullptr);
+    file_info.creation_date = time;
+    file_info.modified_date = time;
+
     CloseHandle(hFile);
 
     // UTF-8로 변환
-    CT2A fileNameInZipUtf8(fileNameInZip, CP_UTF8);
-    mz_zip_file file_info;
-    memset(&file_info, 0, sizeof(file_info));
+    CT2A fileNameInZipUtf8(fileNameInZip, CP_UTF8);    
     file_info.filename = (const char*)fileNameInZipUtf8;
     file_info.compression_method = MZ_COMPRESS_METHOD_DEFLATE;
     file_info.flag |= MZ_ZIP_FLAG_UTF8; //UTF-8 플래그 설정
