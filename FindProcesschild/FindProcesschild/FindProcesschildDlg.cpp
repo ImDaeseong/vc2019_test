@@ -129,7 +129,7 @@ BOOL CFindProcesschildDlg::OnInitDialog()
 	int nScreenSizeY = GetSystemMetrics(SM_CYSCREEN);
 	MoveWindow((nScreenSizeX - rc.Width()), (nScreenSizeY - rc.Height()), rc.Width(), rc.Height());
 
-	m_timer = SetTimer(1, 2000, NULL);
+	//m_timer = SetTimer(1, 2000, NULL);
 
 	return TRUE; 
 }

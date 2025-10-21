@@ -18,6 +18,7 @@ CEditEx::~CEditEx()
 BEGIN_MESSAGE_MAP(CEditEx, CEdit)
 	ON_WM_CTLCOLOR_REFLECT()
 	ON_WM_NCPAINT()
+	ON_WM_NCCALCSIZE()
 	ON_CONTROL_REFLECT(EN_SETFOCUS, &CEditEx::OnEnSetfocus)
 	ON_CONTROL_REFLECT(EN_KILLFOCUS, &CEditEx::OnEnKillfocus)
 	ON_WM_CHAR()
@@ -48,6 +49,14 @@ void CEditEx::OnNcPaint()
 	CBrush brush(RGB(244, 245, 247));
 	pDC->FrameRect(&rect, &brush);
 	ReleaseDC(pDC);
+}
+
+void CEditEx::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
+{
+	CEdit::OnNcCalcSize(bCalcValidRects, lpncsp);
+
+	//커서와 텍스트 약간 아래로 이동
+	//lpncsp->rgrc[0].top += 1; 
 }
 
 void CEditEx::OnEnSetfocus()
